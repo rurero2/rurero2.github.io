@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>艦艇の眠る場所</title>
+  <script src="data2.js"></script>
+<script src="http://www.webglearth.com/v2/api.js"></script>
+  <script>
+    var map;
+    function init(){
+      map = new WE.map('mapcontainer');
+      //座標の指定
+      var mpoint = [34.2315064,132.5399606];
+      map.setView(mpoint, 3);
+      path='https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg'
+      path2='https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png'
+      var real = WE.tileLayer(path,
+        {  attribution: "データソース：Landsat8画像（GSI,TSIC,GEO Grid/AIST）, Landsat8画像（courtesy of the U.S. Geological Survey）, 海底地形（GEBCO）世界衛星モザイク画像 obtained from site https://lpdaac.usgs.gov/data_access" });
+      real.addTo(map);
+      //test
+      //var markerCustom = WE.marker([51.5, -0.09], 'icon/BB_icon.png', 100, 24).addTo(map);
+      var marker = WE.marker([51.5, -0.09]).addTo(map);
+        marker.bindPopup("<b>Hello world!</b><br>I am a popup.<br /><span style='font-size:10px;color:#999'>Tip: Another popup is hidden in Cairo..</span>", {maxWidth: 150, closeButton: true}).openPopup();
+      /*
+      //艦種アイコン
+      var BBIcon = 'icon/BB_icon.png',  
+      
+      //艦マーカーの配置
+
+      markers=[]
+      for(var shipname in shipsdata){
+      //console.log(shipname)
+      for(var attr in shipsdata[shipname]){
+        //console.log(attr)
+        if(attr=="senbotsu_loc"){
+          var kure = "日向。"
+          var popup1 = "日向。"
+          //WE.marker([33,133], { draggable: false }).bindPopup(popup1).bindTooltip("呉軍工廠").addTo(map);
+          //var a= WE.marker(shipsdata[shipname][attr], {icon: BBIcon}).bindPopup(popup1).bindTooltip("日向だよ").addTo(map).on( 'click', function(e) {  clickEvt(e); });;
+          
+
+          var a = WE.marker(shipsdata[shipname][attr],BBIcon,38,50).addTo(map);
+          a.bindPopup("<b>Cairo</b><br>Yay, you found me!", {maxWidth: 120, closeButton: true});
+          a.title=shipname
+          var b = WE.marker(shipsdata[shipname][attr]).addTo(map);
+
+          markers.push(a)
+          markers.push(b)
+
+        }
+      }
+    }
+    */
+    
+    //海戦アイコン
+    /*
+    var NB_icon = WE.icon({
+      iconUrl: 'icon/NB_icon.jpg',  
+      iconSize:     [38, 50],
+      iconAnchor:   [19, 25],
+      popupAnchor:  [0,  -20]
+    });
+    //popup
+
+    //
+    NBmarkers=[]
+      for(var NB in Naval_battles){
+      console.log(NB)
+      for(var attr in Naval_battles[NB]){
+        console.log("tttt")
+        console.log(attr)
+        if(attr=="location"){
+          console.log("tttt")
+          var name_of_battle=Naval_battles[NB]["name"]
+          var period_of_battle=Naval_battles[NB]["start_date"]+"～"+Naval_battles[NB]["end_date"]
+          var left_countries=Naval_battles[NB]["left_countries"].join("・")
+          var left_ships=Naval_battles[NB]["left_ships"]
+          var left_sunken_ships=Naval_battles[NB]["left_sunken_ships"]
+          var lsl=""
+          left_ships.forEach(e=>{
+            if(left_sunken_ships.indexOf(e)!=-1){
+              lsl=lsl+'<div style="color: red; display: inline-block;">'+e+'</div>'+"　"
+            }else{
+              lsl=lsl+e+"　"
+            }
+          })
+          var right_countries=Naval_battles[NB]["right_countries"].join("・")
+          var right_ships=Naval_battles[NB]["right_ships"]
+          var right_sunken_ships=Naval_battles[NB]["right_sunken_ships"]
+          var rsl=""
+          right_ships.forEach(e=>{
+            if(right_sunken_ships.indexOf(e)!=-1){
+              rsl=rsl+'<div style="color: red; display: inline-block;">'+e+'</div>'+"　"
+            }else{
+              rsl=rsl+e+"　"
+            }
+          })
+    var popuptxt='\
+<div style="width:500px;height:300px;border:solid;position:relative;">\
+<div id="name_of_battle" style="text-align:center;font-size:30px;">'+name_of_battle+'</div>\
+<div id="period_of_battle" style="text-align:center;font-size:10px;border:solid;">'+period_of_battle+'</div>\
+<div id="left_countries" style="display:inline;text-align:left">'+left_countries+'</div>\
+<div id="right_countries" style="display:inline-block;text-align:right;float:right;">'+right_countries+'</div>\
+<div style="position:relative;">\
+<div id="left_ships"style="display:inline;text-align:left">'+lsl+'</div>\
+<div id="right_ships" style="display:inline;text-align:right;float:right;">'+rsl+'</div>\
+</div>\
+</div>'
+          var popup1 = WE.popup({ maxWidth: 1550 }).setContent(popuptxt);
+          //WE.marker([33,133], { draggable: false }).bindPopup(popup1).bindTooltip("呉軍工廠").addTo(map);
+          var a= WE.marker(Naval_battles[NB]["location"], {icon: NB_icon}).bindPopup(popup1).bindTooltip(Naval_battles[NB]["name"]).addTo(map).on( 'click', function(e) {   });;
+          a.title=NB
+          NBmarkers.push(a)
+
+        
+      }
+    }
+      }
+    */
+    
+    }
+    //shipsdata一つ一つのデータ化
+
+    
+  </script>  
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+  const loadscreen = document.getElementById('load');
+  loadscreen.classList.add('loaded');
+  const loadbgscreen = document.getElementById('bg');
+  loadbgscreen.classList.add('loaded');
+  console.log("load_completed")
+})
+</script>
+<style>
+.loaded {
+  opacity: 0;
+  visibility: hidden;
+}
+html, body{padding: 0; margin: 0; background-color: black;}
+/*{top: 0; right: 0; bottom: 0; left: 0; position: absolute !important;}*/
+#bg {
+  background:#000;
+}
+#bg2 {
+  background:#000;
+
+}
+#mapcontainer{top: 0; right: 0; bottom: 0; left: 0; position: absolute !important;}
+#load {
+  background:#000;
+  position:absolute;
+  width:600px;
+  height:36px;
+  left:50%;
+  top:40%;
+  margin-left:-300px;
+  overflow:visible;
+  -webkit-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+  cursor:default;
+  z-index:1000;
+
+}
+
+#load div {
+  position:absolute;
+  width:20px;
+  height:36px;
+  opacity:0;
+  font-family:Helvetica, Arial, sans-serif;
+  animation:move 2s linear infinite;
+  -o-animation:move 2s linear infinite;
+  -moz-animation:move 2s linear infinite;
+  -webkit-animation:move 2s linear infinite;
+  transform:rotate(180deg);
+  -o-transform:rotate(180deg);
+  -moz-transform:rotate(180deg);
+  -webkit-transform:rotate(180deg);
+  color:#35C4F0;
+}
+
+#load div:nth-child(2) {
+  animation-delay:0.2s;
+  -o-animation-delay:0.2s;
+  -moz-animation-delay:0.2s;
+  -webkit-animation-delay:0.2s;
+}
+#load div:nth-child(3) {
+  animation-delay:0.4s;
+  -o-animation-delay:0.4s;
+  -webkit-animation-delay:0.4s;
+  -webkit-animation-delay:0.4s;
+}
+#load div:nth-child(4) {
+  animation-delay:0.6s;
+  -o-animation-delay:0.6s;
+  -moz-animation-delay:0.6s;
+  -webkit-animation-delay:0.6s;
+}
+#load div:nth-child(5) {
+  animation-delay:0.8s;
+  -o-animation-delay:0.8s;
+  -moz-animation-delay:0.8s;
+  -webkit-animation-delay:0.8s;
+}
+#load div:nth-child(6) {
+  animation-delay:1s;
+  -o-animation-delay:1s;
+  -moz-animation-delay:1s;
+  -webkit-animation-delay:1s;
+}
+#load div:nth-child(7) {
+  animation-delay:1.2s;
+  -o-animation-delay:1.2s;
+  -moz-animation-delay:1.2s;
+  -webkit-animation-delay:1.2s;
+}
+
+@keyframes move {
+  0% {
+    left:0;
+    opacity:0;
+  }
+  35% {
+    left: 41%; 
+    -moz-transform:rotate(0deg);
+    -webkit-transform:rotate(0deg);
+    -o-transform:rotate(0deg);
+    transform:rotate(0deg);
+    opacity:1;
+  }
+  65% {
+    left:59%; 
+    -moz-transform:rotate(0deg); 
+    -webkit-transform:rotate(0deg); 
+    -o-transform:rotate(0deg);
+    transform:rotate(0deg); 
+    opacity:1;
+  }
+  100% {
+    left:100%; 
+    -moz-transform:rotate(-180deg); 
+    -webkit-transform:rotate(-180deg); 
+    -o-transform:rotate(-180deg); 
+    transform:rotate(-180deg);
+    opacity:0;
+  }
+}
+
+@-moz-keyframes move {
+  0% {
+    left:0; 
+    opacity:0;
+  }
+  35% {
+    left:41%; 
+    -moz-transform:rotate(0deg); 
+    transform:rotate(0deg);
+    opacity:1;
+  }
+  65% {
+    left:59%; 
+    -moz-transform:rotate(0deg); 
+    transform:rotate(0deg);
+    opacity:1;
+  }
+  100% {
+    left:100%; 
+    -moz-transform:rotate(-180deg); 
+    transform:rotate(-180deg);
+    opacity:0;
+  }
+}
+
+@-webkit-keyframes move {
+  0% {
+    left:0; 
+    opacity:0;
+  }
+  35% {
+    left:41%; 
+    -webkit-transform:rotate(0deg); 
+    transform:rotate(0deg); 
+    opacity:1;
+  }
+  65% {
+    left:59%; 
+    -webkit-transform:rotate(0deg); 
+    transform:rotate(0deg); 
+    opacity:1;
+  }
+  100% {
+    left:100%;
+    -webkit-transform:rotate(-180deg); 
+    transform:rotate(-180deg); 
+    opacity:0;
+  }
+}
+
+@-o-keyframes move {
+  0% {
+    left:0; 
+    opacity:0;
+  }
+  35% {
+    left:41%; 
+    -o-transform:rotate(0deg); 
+    transform:rotate(0deg); 
+    opacity:1;
+  }
+  65% {
+    left:59%; 
+    -o-transform:rotate(0deg); 
+    transform:rotate(0deg); 
+    opacity:1;
+  }
+  100% {
+    left:100%; 
+    -o-transform:rotate(-180deg); 
+    transform:rotate(-180deg); 
+    opacity:0;
+  }
+}
+</style>
+</head>
+<body onload="init()">
+<!--以下ロード画面-->
+<div id="bg" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:30;">
+<div id="load">
+  <div>G</div>
+  <div>N</div>
+  <div>I</div>
+  <div>D</div>
+  <div>A</div>
+  <div>O</div>
+  <div>L</div>
+</div>
+</div>
+<!--以下メイン画面-->
+
+<div id="mapcontainer"></div>
+
+<!--<div id ="tunnel"></div>-->
+<!--
+  <div id="clocksheet"><img src="clock.png"/><span id="clock">1945/8/15</span></div>
+  <button class="btn-menu">メニュー</button>
+  <div id="contentsbar" class="open-menu">
+  <div id="name" >島風</div><img src="" style="display:inline"></img>
+  <hr>
+  <img src="kanmusu/004_2nd.jpg" style="height:200px;border:solid;"></img>
+  <ul>
+      <li>竣工日<a href="#" id="shunkou"></a></li>
+      <li>進水日<a href="#" id="shinsui"></a></li>
+      <li>沈没日<a href="#" id="senbotsu"></a></li>
+    </ul>
+   <div>
+-->
+</body>
+<style>
+a {
+  /*color: #fff;*/
+  text-decoration: none;
+  white-space: nowrap;
+  
+}
+li {
+  margin: 2rem 0;
+    background: #0bd;
+}
+ 
+/* ボタン */
+.btn-menu {
+  pointer-events: auto;
+  position:absolute;
+  top:50px;
+  z-index:10;
+  border: 1px solid #999;
+  /*background: transparent;
+  /*color: #fff;*/
+  padding: .5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  line-height: 1;
+
+}
+#name{
+  font-family: serif;
+  font-size:40px;
+  text-align: left;
+  margin:auto auto auto 40px;
+}
+#contentsbar {
+   background: white;
+  position: absolute;
+  z-index: 1;
+  top: 10px;
+  right: 0;
+  bottom: 5px;
+  overflow-x: hidden;
+  text-align: center;
+  width: 0%;
+  transition: .2s;
+}
+#contentsbar.open-menu {
+  width: 25%;
+}
+#tunnel{
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+
+  width: 100%; height: 100%;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 50% 50%, transparent 70%, black 90%);
+  z-index: 1;
+}
+img.leaflet-tile-loaded{
+  /*filter:contrast(150%);
+  filter:brightness(2);
+  filter: hue-rotate(90deg);
+  filter:saturate(200%);*/
+  filter:sepia(30%);
+}
+</style>
+<script>
+//const btn = document.querySelector('.btn-menu');
+//const contentsbar = document.getElementById('contentsbar');
+ 
+//btn.addEventListener('click', () => {
+//contentsbar.classList.toggle('open-menu')
+//});
+function clickEvt(e){
+  //alert( e.target.title + " の都道府県コード＝ "+ e.target.code );
+  //alert( 東京都 + " の都道府県コード＝ "+ 13 );
+  contentsbar.classList.remove('open-menu')
+  window.setTimeout(function(){openwindow(e)}, 200);
+}
+//shipwindwの編集
+dictins={}
+function openwindow(e){
+  for(var attr of ["name","shunkou","shinsui","senbotsu"]){
+    console.log(Object.keys(shipsdata[e.target.title]))
+    console.log(attr)
+    console.log(Object.keys(shipsdata[e.target.title]).includes(attr))
+    
+    if (Object.keys(shipsdata[e.target.title]).includes(attr)){
+      console.log("a")
+      document.getElementById("name").innerHTML= shipsdata[e.target.title]["name"]
+      document.getElementById(attr).innerHTML= shipsdata[e.target.title][attr]
+      console.log( document.getElementById(attr).innerHTML)
+    }
+  }
+  //document.getElementById("name").innerHTML= shipsdata[e.target.title]["name"]
+  //document.getElementById("shunkou").innerHTML= shipsdata[e.target.title]["shunkou"]
+  //document.getElementById("shinsui").innerHTML= shipsdata[e.target.title]["shinsui"]
+  //document.getElementById("senbotsu").innerHTML= shipsdata[e.target.title]["senbotsu"]
+  //console.log(e.target._popup._container._content)
+  contentsbar.classList.add('open-menu')
+}
+</script>
+</html>

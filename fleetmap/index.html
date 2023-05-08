@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>船たちの眠る場所</title>
+	<!--<title>艦これ×史実</title>-->
+        <meta http-equiv="content-language" content="ja">
+        <meta name="author" content="@rei_roguelike">
+	<meta name="robots" content="noindex">
+<meta name="description" content="艦これに登場する艦船たちの情報を集めたサイトです。">
+<meta name="keywords" content="艦これ,軍艦,沈没位置,イベント,起工日,進水日,沈没日">
+        <link rel="icon" type="image/png" href="http://rachel.html.xdomain.jp/chizu/icon/top_big.jpg">
+	<meta property="og:url" content="http://rachel.html.xdomain.jp/chizu/chizu.html">
+<meta property="og:title" content="船たちの眠る場所">
+<meta property="og:description" content="艦これに登場する艦艇たちの情報が見れるサイトです。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="http://rachel.html.xdomain.jp/chizu/icon/thumbnail.png">
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@rei_roguelike" />
+<meta name="twitter:image" content="http://rachel.html.xdomain.jp/chizu/icon/thumbnail.png">
+	
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.0/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous"></link>
+  <script src="https://unpkg.com/leaflet@1.3.0/dist/leaflet.js"></script>
+  <script src="data3.js"></script>
+  <script src="NBdata.js"></script>
+  <script src="chizu.js"></script>
+	
+
+<link rel="stylesheet" type="text/css" href="chizu.css">
+  <link rel="stylesheet" type="text/css" href="confetti.css">
+    <link rel="stylesheet" type="text/css" href="confetti2.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"/>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P3KS1NLJ5S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P3KS1NLJ5S');
+</script>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+
+  <script>
+    var markers
+    var NBmarkers
+    var map;
+    var todayships
+    var globaldaydiff=0
+    function init(){
+      map = L.map('mapcontainer',{zoomControl:false});
+      //座標の指定
+      var mpoint = [34.2315064,132.5399606];
+      map.setView([28,120], 4);
+     //地理院地図の標準地図タイル
+      var gsi =L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/std/{z}/{x}/{y}.png', 
+        {attribution: "<a href='https://maps.gsi.go.jp/development/ichiran.html' target='_blank'>地理院タイル</a>"});
+      //地理院地図の淡色地図タイル
+      /*
+      var gsipale = L.tileLayer('http://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png',
+        {attribution: "<a href='http://portal.cyberjapan.jp/help/termsofuse.html' target='_blank'>地理院タイル</a>"});
+      //オープンストリートマップのタイル
+      var osm = L.tileLayer('http://tile.openstreetmap.jp/{z}/{x}/{y}.png',
+        {  attribution: "<a href='http://osm.org/copyright' target='_blank'>OpenStreetMap</a> contributors" });
+
+      var real = L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg',
+        {  attribution: "データソース：Landsat8画像（GSI,TSIC,GEO Grid/AIST）, Landsat8画像（courtesy of the U.S. Geological Survey）, 海底地形（GEBCO）世界衛星モザイク画像 obtained from site https://lpdaac.usgs.gov/data_access" });
+      var mono = L.tileLayer('http://{s}.tile.stamen.com/{variant}/{z}/{x}/{y}.png', {
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ', variant: 'toner-background' });
+    var gray = L.tileLayer('http://{s}.tile.stamen.com/{variant}/{z}/{x}/{y}.png', {
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ',
+        variant: 'toner-lite'
+    });
+    var water = L.tileLayer('http://{s}.tile.stamen.com/{variant}/{z}/{x}/{y}.png', {
+        minZoom: 1,
+        maxZoom: 16,
+        attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ',
+        variant: 'watercolor'
+    });
+    var ESRI = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; <a href="http://www.esrij.com/"> Esri Japan </a>'
+    });
+    var ESRI_Osean = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Ocean_Basemap/MapServer/tile/{z}/{y}/{x}', {
+        maxZoom: 13,
+        attribution: 'Tiles by <a href="http://www.esrij.com/"> Esri Japan </a>'});
+
+      //baseMapsオブジェクトのプロパティに3つのタイルを設定
+      var baseMaps = {
+        "地理院地図" : gsi,
+        "淡色地図" : gsipale,
+        "オープンストリートマップ"  : osm,
+        "航空写真": real,
+        "モノクロ":mono,
+        "グレー":gray,
+        "ウォーターカラー":water,
+        "ESRI":ESRI,
+        "OSEAN":ESRI_Osean
+      };
+      //layersコントロールにbaseMapsオブジェクトを設定して地図に追加
+      //コントロール内にプロパティ名が表示される
+      L.control.layers(baseMaps).addTo(map);*/
+      gsi.addTo(map);
+      L.control.scale({ maxWidth: 200, position: 'bottomright', imperial: false }).addTo(map);
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+      //埼玉大学の位置にドラッグ可能なマーカーを地図に追加
+      var kure = "呉海軍工廠の詳細です。"//<br><img src='su.jpg' width='500' height='375'>
+      //ポップアップオブジェクトを作成
+      var popup1 = L.popup({ maxWidth: 550 }).setContent(kure);
+      //マーカーにポップアップを紐付けする。同時にbindTooltipでツールチップも追加
+      var LeafIcon = L.Icon.extend({
+        options: {
+          shadowUrl: 'icon/Shadow.png', // シャドウ付きアイコンを使う場合は、削除もしくはコメントアウト
+          shadowSize: [41, 41], // シャドウ付きアイコンを使う場合は、削除もしくはコメントアウト
+          shadowAnchor: [10, 41], // シャドウ付きアイコンを使う場合は、削除もしくはコメントアウト
+          iconSize: [25, 41], // シャドウ付きアイコンを使う場合は、[41, 41]に設定
+          iconAnchor: [10, 41],
+          popupAnchor: [3, -40]
+        }
+      });
+      //艦種アイコン
+      var icons={}
+      var BBIcon2 = L.icon({
+      iconUrl: 'icon/BB_icon.png',  
+      iconSize:     [38, 50],
+      iconAnchor:   [19, 25],
+      popupAnchor:  [0,  -20]
+    });
+    var stypes={"BB":"BBs","SS":"SS","DD":"DD","DE":"DD","CM":"DD"
+    ,"CL":"CL","CV":"CV","CVL":"CV","CVE":"CV","AV":"CV"
+    ,"PF":"PF","PG":"PF","PR":"PF","PC":"PF","SC":"PF","AM":"PF"
+    ,"CA":"CA","other":"other"}
+    for(var stype in stypes){
+    	var big=[[144, 100],[72, 50],[0,  -40]]
+    	var normal=[[72, 50],[36, 25],[0,  -20]]
+    	var small=[[36, 25],[18, 12],[0,  -10]]
+    	if (["BB","CV"].includes(stype)){
+    		var size=big
+    	}else{
+    		if(["CVL","CL"].includes(stype)){
+    		    var size=normal
+    	    }else{
+    	    	var size=small
+    	    }
+    	}
+    	
+    	icons[stype] = L.icon({
+	  
+      iconUrl: "icon/"+stypes[stype]+".png",  
+      iconSize:     size[0],
+      iconAnchor:   size[1],
+      popupAnchor:  size[2]
+    }); 
+    }
+    
+      var GreenIcon = new LeafIcon({iconUrl: 'icon/BB_icon_can.png'});
+      //var a=L.marker(mpoint, { icon: BBIcon,draggable: false }).bindPopup(popup1).bindTooltip("てｓｔ").addTo(map).on( 'click', function(e) {  clickEvt(e); });;
+      //a.title="e"
+      //艦マーカーの配置
+      markers={} //global
+      globalicons=[]
+      console.log("マーカーの配置を開始")
+      //サジェスト
+      var opt=document.getElementById("opt")
+      for(var shipname in shipsdata){
+      //console.log(shipname)
+      // 追加する要素を作成します
+    var newElement = document.createElement("option"); // p要素作成
+    var newContent = document.createTextNode(shipname); // テキストノードを作成
+    newElement.appendChild(newContent); // p要素にテキストノードを追加
+    newElement.setAttribute("id",shipname); // p要素にidを設定
+    //var child=document.getElementById(shipname);
+      opt.appendChild(newElement);
+      for(var attr in shipsdata[shipname]){
+        //console.log(attr)
+        if(attr=="Location"){
+          var content=makepopup(shipsdata[shipname])
+          var popup1 = L.popup({ maxWidth: 1550 }).setContent(content);
+          //L.marker([33,133], { draggable: false }).bindPopup(popup1).bindTooltip("呉軍工廠").addTo(map);
+          //console.log(shipname+ "のマーカーを設置開始" )
+          //console.log(shipsdata[shipname][attr])
+          var classname={"className":shipsdata[shipname]["type"]}
+          //console.log(shipsdata[shipname]["type"])
+          if (shipsdata[shipname]["type"] in icons){
+            var iconchoice={icon: icons[shipsdata[shipname]["type"]]}
+          }else{
+            var iconchoice={icon: icons["other"]}
+          }
+          //console.log(shipname)
+          var lawdisp=shipsdata[shipname]["Displacement"]
+          var disp=lawdisp.match(/[\d,]+/)[0].replace(",","")
+          disp=(parseInt(disp)/1000)**(0.4)
+          //console.log(disp)
+          //iconchoice.options.iconSize=[72*disp, 50*disp]
+          var type=shipsdata[shipname]["type"]
+          if(type in stypes){
+          	var icontype=stypes[shipsdata[shipname]["type"]]
+          }else{
+          	var icontype="other"
+          }
+
+          
+          var newicon=L.icon({
+		  ////iconUrl:kcimg/kanmusu/'+s["imgsrc"]+'.png
+          iconUrl: "icon/"+icontype+".png",  
+          //iconSize:     [36, 25],
+          iconSize:     [36*disp, 25*disp],
+          iconAnchor:   [18*disp, 12*disp],
+          popupAnchor:  [0, -10*disp]
+          }); 
+
+
+
+          var a= L.marker(shipsdata[shipname][attr], {icon: newicon}).bindPopup(popup1,classname).bindTooltip(shipsdata[shipname]["jpname"]).addTo(map).on( 'click', function(e) { popupclick(e.target.title)  });;
+          a.title=shipname
+          markers[shipname]=a
+          //console.log(shipname+ "のマーカーを設置" )
+
+        }
+      }
+    }
+    //markers["IJN  Ise  "].openPopup();
+    //海戦アイコン
+    var NB_icon = L.icon({
+      iconUrl: 'icon/NB_icon.jpg',  
+      iconSize:     [38, 50],
+      iconAnchor:   [19, 25],
+      popupAnchor:  [0,  -20]
+    });
+    //popup
+
+    //
+    NBmarkers=[]
+      for(var NB in Naval_battles){
+      console.log(NB)
+      for(var attr in Naval_battles[NB]){
+        //console.log("tttt")
+        //console.log(attr)
+        if(attr=="location"){
+          //console.log("tttt")
+             var popuptxt=makeNBpopup2(NB)
+          var popup1 = L.popup({ maxWidth: 1550 }).setContent(popuptxt);
+          //L.marker([33,133], { draggable: false }).bindPopup(popup1).bindTooltip("呉軍工廠").addTo(map);
+          //var a= L.marker(Naval_battles[NB]["location"], {icon: NB_icon}).bindPopup(popup1).bindTooltip(Naval_battles[NB]["name"]).addTo(map).on( 'click', function(e) { popupNBclick(e.target.title) });;
+          a.title=NB
+          NBmarkers.push(a)
+
+        
+      }
+    }
+      }
+      var today = new Date();
+  var month = today.getMonth() + 1;
+  var day = today.getDate();
+todayships= whatday(month +"/"+ day)
+console.log("todayships::")
+console.log(todayships)
+      for(var statusnum in todayships){
+		for(var shipsnum in todayships[statusnum]){
+			var shipname=todayships[statusnum][shipsnum]
+			var html=document.getElementById(statusnum).innerHTML
+			html=html+ '<div onclick="attention('+"'"+shipname+"'"+')">'+"《"+shipsdata[shipname]["jpname"]+"》"+'</div>'
+			document.getElementById(statusnum).innerHTML=html
+			console.log(html)
+			
+			}
+		}
+		
+		/*for(var type of ["DD"]){
+			var classname=".leaflet-popup."+type+" .leaflet-popup-content-wrapper,"
+			+".leaflet-popup."+type+" .leaflet-popup-tip,"
+			+".leaflet-popup."+type+" .mhr"
+			document.getElementsByClassName(classname).style.borderColor="#297429";
+			var classname2=".leaflet-popup."+type+" a.leaflet-popup-close-button"
+			document.getElementsByClassName(classname2).style.color="#297429";
+		}*/
+		if (!localStorage.getItem('visited')) {
+			console.log(localStorage.getItem('visited'))
+			localStorage.setItem('visited', "true");
+			greeting()
+		}else{
+			//greeting()
+			//localStorage.removeItem("visited");
+		}
+
+		var afterload=()=>{
+			document.getElementById("logo").classList.add('fade');
+			
+			//map.setView(mpoint, 2);
+		}
+		setTimeout(afterload,3000)
+		setTimeout(()=>{
+		  var memo = document.querySelector('#clockyear')
+		  var range = document.createRange()
+		  var offset = memo.innerText.length
+		  range.setStart(memo.firstChild, offset)
+		  range.setEnd(memo.firstChild, offset)
+		  window.getSelection().removeAllRanges()
+		  window.getSelection().addRange(range)
+		},10)
+		setTimeout(()=>{
+			document.getElementById("logo").classList.add('hidden')
+
+		},4500)
+    }
+    //shipsdata一つ一つのデータ化
+	  //日付にフォーカス
+	  
+
+	  
+	  
+
+    
+  </script>  
+<script>
+window.addEventListener("load", function() {//'DOMContentLoaded'
+  //setTimeout(function(){
+    const loadscreen = document.getElementById('load');
+  loadscreen.classList.add('loaded');
+  const loadbgscreen = document.getElementById('bg');
+  loadbgscreen.classList.add('loaded');
+  console.log("load_completed")
+  //},3000);
+
+  
+})
+</script>
+<style></style>
+</head>
+<body onload="init()">
+
+<!--以下ロード画面-->
+<div id="bg" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:300;">
+<div id="load">
+  <div>G</div>
+  <div>N</div>
+  <div>I</div>
+  <div>D</div>
+  <div>A</div>
+  <div>O</div>
+  <div>L</div>
+</div>
+</div>
+<!--以下メイン画面-->
+<!--<div id="upperbar">
+<div class="menu_content"></div>
+<div class="menu_content"></div>
+<div class="menu_content"></div>
+<div class="menu_content"></div>
+<div class="menu_content"></div>
+</div>-->
+<!--<div　id="searchbar">-->
+<input id="sbox"  type="text" placeholder="フリーワードを入力" autocomplete="on" value="" onkeypress="enter(event.keyCode);" list="opt"/>
+<datalist id="opt">
+<option value="all">
+<option value="at19XX/XX/XX">
+<option value="from19XX/XX/XX">
+</datalist>
+<button id="sbtn" class="sbtn" type="button" onclick="search()"><i class="fas fa-search" ></i></button>
+</div>
+<div id="mapcontainer" style="position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;"></div>
+<!--ダイアログ-->
+<div>
+<div id="daydialog" class='open-menu'>
+<div id="daydialogButtonBox">
+<span id="dayminus" onclick="nextday(-1)">◀</span>
+<span id="closedaybox" onclick="closeday()">close</span>
+<span id="dayplus" onclick="nextday(+1)">▶</span>
+</div><hr class="dayshr">
+<span class="daysship">今日が起工日の船</span><br><hr class="dayshr">
+<div id="laid_down_day" class="degital"></div><hr class="dayshr">
+<span class="daysship">今日が進水日の船</span><br><hr class="dayshr">
+<div id="launched_day" class="degital"></div><hr class="dayshr">
+<span class="daysship">今日が就役日の船</span><br><hr class="dayshr">
+<div id="commission_day" class="degital"></div><hr class="dayshr">
+<span class="daysship">今日が沈没日の船</span><br><hr class="dayshr">
+<div id="sunk_day" class="degital"></div>
+</div>
+</div>
+<div id="clockbox">
+<div id="clock">
+<span  id="clockyear" autofocus contenteditable="true" class="clocknum">1944</span>/
+<span  id="clockmonth" contenteditable="true" class="clocknum">1</span>/
+<span  id="clockday" contenteditable="true" class="clocknum">1</span>
+</div>
+<span onclick="fromClock()"  class="degitalbutton" ><i class="fas fa-play" ></i></span>
+<span onclick="haltupdate()" class="degitalbutton" value=""><i class="fas fa-pause" ></i></span>
+<span onclick="timesearchfc()"  class="degitalbutton" title="その時点で就役している艦艇を表示します。"><i class="fas fa-search" ></i></span>
+</div>
+<div id="logo">船たちの<br>眠る場所</div>
+<!--<div id="logo">史実と<br>艦これ</div>-->
+<div id ="uenoyatsu" ></div>
+<div id="buttonsbox">
+<div id="b1" class="buttons hidden" onclick="search('all')">Reset</div>
+<div id="b2" class="buttons hidden">Ship</div>
+<div id="b3" class="buttons hidden">Naval Battles</div>
+<div id="b4" class="buttons hidden" onclick="search('from1944/1/1')">From 1944</div>
+<div id="b5" class="buttons hidden">Filter</div>
+</div>
+<div id=buttonsbox2>
+<div id="b6" class="buttons" onclick="togglebuttons()">+</div>
+<!--<div id="b5" class="buttons hidden">Filter</div>-->
+<div id="b7" class="buttons hidden">Add data</div>
+<div id="b8" class="buttons hidden">Setting</div>
+<div id="b9" class="buttons hidden">About us</div>
+<div id="b10" class="buttons hidden" onclick="openHowToUse()">How to use</div>
+</div>
+<div id="initialbox" class="hidden" style="z-index:30;">
+<div>
+ようこそ、「船たちの眠る場所」へ<br>
+ここでは帝国海軍の艦艇たちがいつ、どこで沈んだのかを地図上で見ることができます。
+（現在工事中で、戦後まで生き残った艦のデータが欠けています。<br>
+また、艦艇のイメージ画像には全てブラウザゲーム艦隊これくしょん-艦これの画像を使用してさせていただいています。）
+<div>分かった</div>
+</div>
+</div>
+<div id="tutorial_1" class="hidden">
+艦名・年代を入力して検索することができます。
+</div>
+<div id="tutorial_2" class="hidden">
+艦名・年代を入力して検索することができます。
+</div>
+<div id="aboutus" class="hidden">
+
+twitter:
+mail:
+</div>
+<div id="aboutthissite" class="hidden">
+製作の際に利用させていただいたサイト様
+<a src="https://support.google.com/?gpf=%23!topic%2Fgec-military-moderated%2FttzeUjkT7yE">Imperial Japanese Navy Losses of WW II – Google プロダクト フォーラム</a>：ほぼ全ての英語・座標データはこれを使用させていただいています。
+<a src="http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/">艦隊これくしょん艦これ</a>：艦艇のイメージ画像として使用させていただいています。
+著作権法 引用　停止します。
+</div>
+<div id="fadeLayer" class="hidden"></div>
+<div id="greetingbox"  class="hidden degitaltxt">
+<div id="greeting">
+<div class="dialog_close" onclick="greeting()">×</div>
+<!--ようこそ、「船たちの眠る場所」へ<br>-->
+はじめまして!<br>
+ここでは艦これに登場する艦船たちがいつ、どこで沈んだのかを地図上で見ることができます。新実装艦・特効予想・記念日の確認などにご活用ください！<br><br>
+⚠終戦まで生き残った艦は未実装です!
+(データは<a href="https://www.google.com/maps/d/u/0/viewer?ie=UTF8&t=h&oe=UTF8&msa=0&mid=1Vr2qYrapAfoY9e4xi2mVLHpqg4g">IJN Losses World War Ⅱ</a>を参考にしているため。現在製作途中です。）<br>
+<div id="toHowToUse" class="dialog_close" style="borderColor:" onclick="greeting();openHowToUse()">使い方を見る</div>
+</div>
+
+</div>
+
+<div id="HowToUse_container" class="hidden">
+<div id="HowToUse"  class="degitaltxt">
+<div id="HowToUse_close" onclick="openHowToUse()">×</div>
+How to use<br>
+<img src="kcimg/other/howtouse1.jpg" style="width:97%;max-height:600px" />
+</div>
+</div>
+<!--
+<div id="existlist" class="degitaltxt hidden">
+	<div><img src="BB.png" style="width:20px;" /></div><div id="existBB">戦艦：5隻・総排水量:10000t</div>
+	<div id="existBB">戦艦：5隻・総排水量:10000t</div>
+	<div id="existBB">戦艦：5隻・総排水量:10000t</div>
+	<div id="existBB">戦艦：5隻・総排水量:10000t</div>
+</div>-->
+
+<!--<div id ="tunnel"></div><!--<img src="clock.png"/><span id="clock">1945/8/15</span>-->
+  <button class="btn-menu">メニュー</button>
+  <!--<div id="contentsbar" class="open-menu">
+  <div id="name" >島風</div><img src="" style="display:inline"></img>
+  <hr>
+  <img src="kanmusu/004_2nd.jpg" style="height:200px;border:solid;"></img>
+  
+  <ul>
+      <li>竣工日<a href="#" id="Laid Down"></a></li>
+      <li>進水日<a href="#" id="Launched"></a></li>
+      <li>沈没日<a href="#" id="Loss Date"></a></li>
+    </ul>
+    -->
+
+
+<script src="confetti.js"></script>
+<script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<!--自作のJS-->
+<script src="confetti2.js"></script>
+</body>
+<script>
+var btn = document.querySelector('.btn-menu');
+const contentsbar = document.getElementById('contentsbar');
+const daydialog = document.getElementById('daydialog');
+btn.addEventListener('click', () => {
+  daydialog.classList.toggle('open-menu')
+  //contentsbar.classList.toggle('open-menu')
+});
+/*
+function clickEvt(e){
+  //alert( e.target.title + " の都道府県コード＝ "+ e.target.code );
+  //alert( 東京都 + " の都道府県コード＝ "+ 13 );
+  //contentsbar.classList.remove('open-menu')
+  daydialog.classList.remove('open-menu')
+  window.setTimeout(function(){openwindow(e)}, 200);
+}
+//shipwindwの編集
+
+dictins={}
+function openwindow(e){
+  for(var attr of ["name","Laid Down","Launched","Loss Date"]){
+    if (Object.keys(shipsdata[e.target.title]).includes(attr)){
+      //console.log("a")
+      document.getElementById("name").innerHTML= shipsdata[e.target.title]["name"]
+      document.getElementById(attr).innerHTML= shipsdata[e.target.title][attr]
+      //console.log( document.getElementById(attr).innerHTML)
+    }
+  }
+
+  //daydialog.classList.add('open-menu')
+}
+var btn = document.querySelector('.btn-menu');
+btn.addEventListener('click', () => {
+  console.log(document.getElementsByClassName("leaflet-popup"))
+  console.log(document.getElementsByClassName("leaflet-popup").style)
+	//document.getElementsByClassName("leaflet-popup-content-wrapper")[0].style.backgroundImage ="url('kcimg/other/papyrus.jpg')"
+	//document.getElementsByClassName("particles-js")[0].style.backgroundImage ="url('kcimg/other/papyrus.jpg')"
+})
+*/
+</script>
+</html>
