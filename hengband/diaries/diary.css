@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kaisei+HarunoUmi&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DotGothic16&family=Yuji+Syuku&display=swap');
+
+body{
+  background-color:black;
+    /*background-image: url(diary_bgimg.jpg);     /* 背景画像指定 */
+    background-size: 600px;
+    font-size:16px;
+    /*font-family: 'Yuji Syuku', serif;*/
+  
+  font-family: 'Shippori Mincho', serif;
+  font-family: 'DotGothic16', sans-serif;
+  /*font-family: 'Yuji Syuku', serif;*/
+  font-family: 'Noto Sans JP', sans-serif;
+}
+#float-container{
+    border-radius: 15px;
+    background-color:white;
+    margin: 50px 200px 50px 70px;
+    max-width: 1500px;
+    padding:30px 50px;
+    border:solid ;
+}
+#inner-container{
+    display:block;
+    /*align-items: flex-start;*/
+    background-color: white;
+    border:solid;
+    padding:30px;
+    margin: 0 auto;
+}
+#banner{
+  font-weight:normal;
+  color:white;
+    text-align: center;
+    margin: 0 auto;
+    font-size:80px;
+  font-family: 'Shippori Mincho', serif;
+   /* font-family: 'Kaisei HarunoUmi', serif;*/
+
+}
+img{
+    padding:0px;
+    border:solid;
+    position:relaive;
+     margin:20px 0 0px 0;
+      width:90%;
+}
+#diary_title{
+  color:#000000;
+  font-size:150%;
+}
+#diary_title:first-letter{
+}
+#date{
+  font-size:70%;
+}
+h2{
+  background-color:black;
+  font-size:150%;
+  color:white;
+  font-weight:normal;
+  padding:5px;
+}
+
+
+
+
+nav {
+  width: 100%;
+  height: 70px;
+  background-color: dimgray;
+  padding-top: 5px;
+  box-sizing: border-box;
+}
+ul {
+  display: flex;
+}
+li {
+  list-style: none;
+}
+li a {
+  display: block;
+  text-decoration: none;
+  color: white;
+  margin-right: 35px;
+}
+.small_contents{
+  margin:10px;
+}

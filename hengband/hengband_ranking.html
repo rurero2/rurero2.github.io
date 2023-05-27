@@ -1,0 +1,35 @@
+<html>
+
+</html>
+	
+  <head>
+	  <meta charset="UTF-8">
+    <title>変愚蛮奴ランキング</title>
+	  <link rel="stylesheet" type="text/css" href="ranking.css">
+	  <script src="encoding.js"></script>
+	  <script src="monster.js"></script>
+    <script src="main.js"></script>
+	  <iframe src="artifact.txt" id="art_txt" class="hide"></iframe> 
+	  <iframe src="monster.txt" id="mon_txt" class="hide"></iframe> 
+</head>
+  <body>
+  <div></div>
+  <div id="banner">変愚蛮奴ランキング</div>
+  <div id="float-container">
+	▼スポイラーファイルを読み込んでランキング作成(調整中)
+    <input type="file" id="select-file" onchange="selectFile()" /><br />
+	  <!--▼JS形式に変換
+	<input type="file" id="txtToJsInput" onchange="txtToJs()" /><br />
+	  <button onclick="artInfo()"></button>
+	  <button onclick="monInfo('default')">モンスター情報</button>-->
+	  <!--<button onclick="towiki()">wiki文型に変換</button>-->
+    <textarea id="output" class="hide"></textarea>
+	<div id="tabletitle">表を生成中…</div>
+	<button onclick="tableFromTxtid('art_txt')">アーティファクトランキング</button><button onclick="tableFromTxtid('mon_txt')">モンスターランキング</button>
+	<div style="font-size:10px">列名をクリックで並び替えができます。</div>
+    <table id="ranking_table">
+	</table>
+	
+  </div>
+  </body>
+</html>
