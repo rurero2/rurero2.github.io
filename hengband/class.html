@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>変愚蛮奴：職業紹介</title>
+    <meta http-equiv="content-language" content="ja">
+    <!--<meta name="author" content="@rei_roguelike">-->
+	<meta name="robots" content="noindex">
+<meta name="description" content="変愚蛮怒の各職業のガイドです。">
+<meta name="keywords" content="変愚蛮怒,hengband,鉄獄観光ガイド,職業,攻略,初心者">
+    <!--<link rel="icon" type="image/png" href="icon/top_big.jpg">
+	<meta property="og:url" content="https://rurero2.github.io/fleetmap/index.html">
+<meta property="og:title" content="船たちの眠る場所">
+<meta property="og:description" content="艦これに登場する艦艇たちの情報が見れるサイトです。">
+<meta property="og:type" content="website">
+<meta property="og:image" content="icon/thumbnail.png">
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@rei_roguelike" />
+<meta name="twitter:image" content="icon/thumbnail.png">
+	-->
+  <script src="diary.js"></script>
+	
+
+<link rel="stylesheet" type="text/css" href="diary.css">
+	<!-- Global site tag (gtag.js) - Google Analytics 
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P3KS1NLJ5S"></script>-->
+</head>
+<body onload="init()">
+
+<div id="banner-cyber">HENGBAND::CLONE HELL</div>
+<div id="float-container-cyber">
+	<div id="inner-container-cyber">
+		<nav>
+		  <ul class="cyber_ui">
+		    <li><a href="#map">敵配置</a></li>
+		    <li><a href="#range">感知範囲</a></li>
+		    <li><a href="#guide">ガイド</a></li>
+		    <li><a href="#enemy">敵詳細</a></li>
+			<li><a href="#tips">Tips</a></li>
+		  </ul>
+		</nav>
+		<br>
+		<div id="date">2023/09/09</div>
+		<div id="diary_title-cyber"><h>クローン地獄攻略</h></div>
+		<hr>辺境の地で受けられる重要クエスト。サーペント戦が卒業試験なら中間試験的な立ち位置。報酬のシヴァ靴は貴重な加速付きの足防具。ここをクリアできるかで今後の展開が大きく変わってくる。
+        <h2 class="cyber_h2" id="map">&nbsp;敵配置</h2>
+		<div><img src="img/clone.png"><br></div>
+        <h2 class="cyber_h2" id="range">&nbsp;感知範囲</h2>
+		<div><img src="img/clone_range.png"><br></div>
+        <h2 class="cyber_h2" id="guide">&nbsp;簡易ガイド</h2>
+		<div><img src="img/clone_guide.jpg"><br></div>
+        <h2 class="cyber_h2" >&nbsp;チャート概要</h2>
+        <div class="small_contents">絶対に失敗したくない・低レベルで挑む場合の初心者向けチャート。
+          敵の感知範囲を上手く活かすことで、動きを固定化している。<br>
+          右のランダムモンスター配置に最初から起きている邪悪なモンスターがいた場合は、女王アリが起きて、”何かが聞こえた”というメッセージが出るので、チャートを放棄して全力で鎮圧する。
+        </div>
+		<table>
+					<tr><th>モンスター</th><th>シンボル</th><th>HP</th><th>速度</th><th>耐性</th><th>抵抗</th>
+						<th>攻撃属性</th><th>召喚</th>
+						<th>ドロップ</th><th>警戒度</th><th>感知範囲</th><th>危険行動など</th></tr>
+					<tr><th>S</th><td>修行僧・忍者</td><td>1881</td><td>10</td><td>炎冷毒水</td><td>乱麻瞬</td>
+						<td>酸毒水</td><td>救援・悪魔1</td>
+						<td>上質4</td><td></td><td>12</td><td>ウォーター・ボール(50+d76)、救援召喚</td></tr>
+					<tr><th>A</th><td>アーチャー</td><td>1000</td><td>10</td><td>なし</td><td>なし</td>
+						<td>沌</td><td>なし</td>
+						<td>上質4</td><td></td><td>20</td><td>純ログルス(68+10d10)、テレポート</td></tr>
+					<tr><th>B</th><td>.</td><td>847</td><td>0</td><td>炎電</td><td>乱麻瞬</td>
+						<td>盲恐経盗</td><td>ヒドラ召喚</td>
+						<td>特別3</td><td></td><td>25</td><td>透明・ESP無効・盗み逃げ・ヒドラ召喚</td></tr>
+					<tr><th>C</th><td>R</td><td>990</td><td>10</td><td>毒沌</td><td>乱麻瞬</td>
+						<td>毒沌知賢盗乱盲</td><td>ヒドラ召喚</td>
+						<td>特別3</td><td></td><td>10</td><td>放射性廃棄物/カオスブレス・盗み逃げ・ヒドラ召喚</td></tr>
+                    <tr><th>D</th><td>a</td><td>1500</td><td>10</td><td></td><td>乱麻</td>
+						<td></td><td>アリ召喚</td>
+						<td>上質4</td><td></td><td>30</td><td>アリ召喚</td></tr>
+				</table>
+        <h2 class="cyber_h2">&nbsp;戦士</h2>
+        <div class="small_contents">
+          初心者に人気の職業。イメージ通りの脳筋であり、最高クラスの火力と耐久を持つ。難点は便利能力がなく、魔道具がド下手なことで、性格や種族で補う必要がある。
+			<h3 class="cyber_h3">&nbsp;ビルド例</h3>
+			
+			<h3 class="cyber_h3">&nbsp;【チャージマン・ゴーレム・戦士】</h3>
+			パワーに全振りしたビルド。火力・耐久を一切妥協していないにもかかわらず、チャージマンのおかげで最低限の魔道具能力があり、麻痺・混乱・透明視・毒耐性といった序盤の詰み要因を潰す耐性を持っている。
+			<h4 class="cyber_h3">&nbsp;【ラッキーマン・クラッコン・戦士】</h4>中盤以降の強さに重点を置いたビルド。それなりに魔道具が使え、クラッコンの加速でクローン地獄を突破しやすい。
+        </div>
+        <h2 class="cyber_h2" >&nbsp;②右上の穴で上のモンスターを倒す</h2>
+        <div class="small_contents">
+          [倒すモンスター：それ・ジャート→ダゴン]<br>
+          スタート地点で待つと、それとジャートが寄ってくる。それには対邪悪結界が有効。もたもたすると盗み逃げされてしまう。ジャートには反射とパニモンが有効。<br>
+          倒し終わったらスタート地点から少し右下に行き、ダゴンを一匹だけ誘導する。反感装備を使う場合、加速して3～4tほどつけてから外すと一匹だけ釣れる。繰り返してダゴンを全滅。
+        </div>
+		
+		
+		
+		<div id="diary_content">
+		<div>
+			<h2 class="cyber_h2" id="enemy">&nbsp;＠:敵詳細</h2>
+			<div class="small_contents">
+				<table>
+					<tr><th>モンスター</th><th>シンボル</th><th>HP</th><th>速度</th><th>耐性</th><th>抵抗</th>
+						<th>攻撃属性</th><th>召喚</th>
+						<th>ドロップ</th><th>警戒度</th><th>感知範囲</th><th>危険行動など</th></tr>
+					<tr><th>ダゴン</th><td>u</td><td>1881</td><td>10</td><td>炎冷毒水</td><td>乱麻瞬</td>
+						<td>酸毒水</td><td>救援・悪魔1</td>
+						<td>上質4</td><td></td><td>12</td><td>ウォーター・ボール(50+d76)、救援召喚</td></tr>
+					<tr><th>ジャート</th><td>p</td><td>1000</td><td>10</td><td>なし</td><td>なし</td>
+						<td>沌</td><td>なし</td>
+						<td>上質4</td><td></td><td>20</td><td>純ログルス(68+10d10)、テレポート</td></tr>
+					<tr><th>それ</th><td>.</td><td>847</td><td>0</td><td>炎電</td><td>乱麻瞬</td>
+						<td>盲恐経盗</td><td>ヒドラ召喚</td>
+						<td>特別3</td><td></td><td>25</td><td>透明・ESP無効・盗み逃げ・ヒドラ召喚</td></tr>
+					<tr><th>ガチャピン</th><td>R</td><td>990</td><td>10</td><td>毒沌</td><td>乱麻瞬</td>
+						<td>毒沌知賢盗乱盲</td><td>ヒドラ召喚</td>
+						<td>特別3</td><td></td><td>10</td><td>放射性廃棄物/カオスブレス・盗み逃げ・ヒドラ召喚</td></tr>
+                    <tr><th>女王アリ</th><td>a</td><td>1500</td><td>10</td><td></td><td>乱麻</td>
+						<td></td><td>アリ召喚</td>
+						<td>上質4</td><td></td><td>30</td><td>アリ召喚</td></tr>
+				</table>
+			</div>
+            <h2 class="cyber_h2" id="tips">&nbsp;＠:Tips</h2>
+			<div class="small_contents">
+			・ランダム配置は日数が進むごとにnasty生成で強力な敵が出やすくなるが、48日までならnasty生成は適用されない。<br>
+            ・何もしていないのに何かが聞こえたら女王アリが起きた可能性が高い。放置すると召喚合戦が始まったり、ガチャピンのカオスブレスでアリが変異したりするので、最優先で鎮圧したい。<br>
+            ・耐火の薬や天恵の巻物、ヒーローの薬は、効果時間中に飲むと効果を延長できる。事前にがぶ飲みするのして挑むのもアリ。<br>
+            ・隠密が高い(10～15以上)場合初手でテレポートして女王アリやそれ、ランダムモンスターを倒す戦略も有効。<br>
+            ・テレパシーがあれば、ダゴンやガチャピンを一匹だけテレパシーで感知した状態で反感装備をつけるとそのモンスターだけ誘導できる。<br>
+              
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

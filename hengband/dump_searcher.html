@@ -1,0 +1,311 @@
+<!--各部門の独自ランキング、最強の生成AF--><?php
+function con($ins){
+  echo '<script>';
+  echo 'console.log('. json_encode( $ins ) .')';
+  echo '</script>';
+}
+
+function debug(){
+  $res='';
+  $db['dbname'] = "rachel_hengband";
+  $db['user'] = 'rachel_test';
+  $db['pass'] = "password";
+  $db['host'] = 'mysql1.php.xdomain.ne.jp';
+  $errorMessage = "";
+  $rows = [];
+
+  $dsn = "mysql:host={$db['host']}; dbname={$db['dbname']}; charset=utf8";
+  $pdo = new PDO($dsn, $db['user'], $db['pass'], [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]);
+  $query = <<<EOM
+SELECT `id`, `eq_a` FROM `score_test_anyway`
+LIMIT 0 , 10000
+EOM;
+//, `平均ダメージ`, `加速`, `日付` `プレイ時間`
+//, , `eq_b`, `eq_c` , `eq_d` , `eq_e` , `eq_h` , `eq_i` , `eq_j` , `eq_k` , `eq_l`
+//平均ダメージ 射撃攻撃修正 射撃回数 加速 プレイ時間 ＡＣ 日付 dungeon eq_a eq_b eq_c
+  con($query);
+  $stmt = $pdo->query($query);
+  $rows = $stmt->fetchAll();
+  con($rows);
+  foreach($rows as $row){
+  //EOM使え
+    $res = $res . "," . $row["id"] . ":" . "["
+.'"'.$row["eq_a"].'"' 
+."]";
+//.' ,"'.$row["平均ダメージ"].'"' .' ,"'.$row["加速"].'"' .' ,"'.$row["日付"].'"'
+//.' ,"'.$row["eq_a"].'"' .' ,"'.$row["eq_b"].'"' .' ,"'.$row["eq_c"].'"' .' ,"'.$row["eq_d"].'"'
+//.' ,"'.$row["eq_e"].'"'.' ,"'.$row["eq_h"].'"'.' ,"'.$row["eq_i"].'"'.' ,"'.$row["eq_j"].'"'
+//.' ,"'.$row["eq_k"].'"'.' ,"'.$row["eq_l"].'"'
+  }
+  con($res);
+}
+debug();
+
+function makequery(){
+  $where="";
+  $key_tr_dict=array(
+  '性格'=>'personality', '死因'=>'cause',
+  '勝利コメント'=>'message', '右手装備'=>'eq_a', '左手装備'=>'eq_b',
+  '射撃装備'=>'eq_c', '右手指輪'=>'eq_d', '左手指輪'=>'eq_e',
+  'アミュレット'=>'eq_f', '光源'=>'eq_g', '胴防具'=>'eq_h',
+  '外套'=>'eq_i', '頭防具'=>'eq_j', '籠手'=>'eq_k', '靴'=>'eq_l', 
+  'キャラクター名'=>'name',
+  );
+  $sort_tr_dict=array(
+  'プレイ時間'=>'プレイ時間_r', '加速'=>'加速_r',
+  '平均ダメージ'=>'平均ダメージ_r', '日付'=>'日付_r',
+  '経験値'=>'経験値_r', '新着順'=>'id',
+  '対邪武器火力'=>'対邪武器火力', '対邪武器TD'=>'対邪武器TD',
+  );
+  foreach (array_keys($_GET) as $key){
+    $connecter= $where == "" ? " " : " AND ";
+    if ($key == "ソート順"){
+      continue;
+    }
+    if (in_array($_GET[$key] , ["すべて",""])){
+      continue;
+    }
+    if (array_key_exists($key, $key_tr_dict)){
+      $newkey = $key_tr_dict[$key];
+      $_GET[$newkey] = $_GET[$key];
+      $key = $newkey;
+    }
+    $equal= $key == 'eq_a' ? " LIKE " : " = ";
+    $wild= $key == 'eq_a' ? "%" : "";
+    $where = $where . $connecter . "`".$key."`" . $equal ."'".$wild.$_GET[$key].$wild."'";
+  }
+  con($where);
+  $querybody=<<<EOM
+SELECT SQL_CALC_FOUND_ROWS * FROM `score_test_anyway`
+WHERE {$where}
+ORDER BY {$sort_tr_dict[$_GET["ソート順"]]} DESC
+LIMIT 0 , 60
+EOM;
+  con($querybody);
+  return $querybody;
+}
+
+function input($mode){
+  con($_GET);
+  if($_GET){
+    $mode="adsearch";
+  }
+  $db['dbname'] = "rachel_hengband";
+  $db['user'] = 'rachel_test';
+  $db['pass'] = "password";
+  $db['host'] = 'mysql1.php.xdomain.ne.jp';
+  $errorMessage = "";
+  $rows = [];
+  //$query = makequery();
+
+  $dsn = "mysql:host={$db['host']}; dbname={$db['dbname']}; charset=utf8";
+  $pdo = new PDO($dsn, $db['user'], $db['pass'], [PDO::ATTR_ERRMODE=>PDO::ERRMODE_EXCEPTION]);
+  if ($mode=="rawsql"){
+    $query = document.getElementById().value;
+  }else if($mode=="adsearch"){
+    $query = makequery();
+  }else {
+    $query = <<<EOM
+SELECT SQL_CALC_FOUND_ROWS *
+FROM `score_test_anyway`
+LIMIT 0 , 60
+EOM;
+  }
+  $stmt = $pdo->query($query);
+  $rows = $stmt->fetchAll();
+  $stmt = $pdo->query("SELECT FOUND_ROWS()");
+  $all_count= $stmt->fetchAll();
+  
+  con($query);
+  con($rows);
+  con($all_count[0]["FOUND_ROWS()"]);
+  
+  output($rows,$all_count[0]["FOUND_ROWS()"]);
+}
+
+function output($rows,$all_count){
+  $res = "";
+  $count = count($rows);
+  if($count > 0){
+    $res = $res .  <<<EOM
+<p>検索結果<br>
+{$all_count}件のダンプがヒットしました。
+- - - - - - - - - - - - - - - - - - - - - - - - </p>
+<table>
+<tr>
+<th></th>
+<th>名前</th>
+<th>種族</th>
+<th>職業</th>
+<th>性格</th>
+<th>魔法</th>
+<th>プレイ時間</th>
+<th>右手装備</th>
+<th>左手装備</th>
+<th>死因</th>
+<th>勝利コメント</th>
+</tr>
+EOM;
+    foreach($rows as $row){
+      $res = $res . <<<EOM
+<tr>
+<td><img src="img/{$row["職業"]}.png"></td>
+<td><a href="http://mars.kmc.gr.jp/~dis/heng_score/show_dump.php?score_id={$row["id"]}" 
+target="_blank" rel="noopener noreferrer">{$row["name"]}</a></td>
+<td>{$row["種族"]}</td>
+<td>{$row["職業"]}</td>
+<td>{$row["性格"]}</td>
+<td>{$row["魔法"]}</td>
+<td>{$row["プレイ時間"]}</td>
+<td>{$row["eq_a"]}</td>
+<td>{$row["eq_b"]}</td>
+<td><a href="http://mars.kmc.gr.jp/~dis/heng_score/show_screen.php?score_id={$row["id"]}" 
+target="_blank" rel="noopener noreferrer">{$row["cause"]}</a></td>
+<td>{$row["message"]}</td>
+</tr>
+EOM;
+    }
+    $res = $res . "</table>";
+  }else{
+    $res ='<p>検索結果</p>' . '<div>該当するデータはありません</div>';
+  }
+  con($res);
+  echo $res;
+  con("出力完了");
+}
+
+
+//  echo "<script> console.log('検索ボタンが押されました。 ')</script>";
+
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>検索</title>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="score.css"/>
+  <script src="score.js"></script>
+  <meta http-equiv="content-language" content="ja">
+  <meta name="author" content="@rei_roguelike">
+  <meta name="robots" content="noindex">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <link rel="icon" type="image/png" href="">
+  <meta property="og:url" content="">
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="">
+  <meta name="twitter:card" content=""/>
+  <meta name="twitter:site" content="@rei_roguelike"/>
+  <meta name="twitter:image" content="">
+</head>
+<body>
+  <header class="headerclass">
+    <div class="header-body">
+      <div class="header-logo">
+        <a href="">
+          <img src="https://i.imgur.com/0gYtByo.png">
+        </a>
+      </div>
+      <nav class="header-nav">
+        <ul class="nav-ul">
+          <li>
+            <a href="">
+              <span>HOME</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <span>Q&A</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <span>変愚蛮奴</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <span>ダンプ検索</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <span>モンスター検索</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <span>アーティファクト検索</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <ul class="header-ul">
+        <li>
+          <a href="">
+            <span></span>
+          </a>
+        </li>
+        <li>
+          <a href="">
+            <span>About us</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+  <div id = "dummy-header" class="headerclass"></div>
+  <div id="wrapper">
+    <div class="site-list-heading">
+      <h1 class="heading-section bigfont">
+        <span>SEA<a style="color:#0F0;" onclick="alert('ガチャピンはカオスのブレスを吐いた！\nわーお！何もかも虹色に見える！')">R</a>CH</span>
+        <!--<span>D</span><span style="color:#840;">U</span><span>MP</span>
+        <small>検索</small>-->
+      </h1>
+    </div>
+    <div class="search-form">
+      <div class="search-form-elem">
+        
+          <input type="text" name="SQL_txt" placeholder="SQLクエリを入力" value="">
+          <button type="submit">検索</button>
+      </div>
+<div class="modal-002__wrap">
+    <input type="radio" id="modal-002__open" class="modal-002__open-input" name="modal-002__trigger"/>
+    <label for="modal-002__open" class="modal-002__open-label">詳細検索</label>
+    <input type="radio" id="modal-002__close" name="modal-002__trigger"/>
+    <div class="modal-002">
+        <div class="modal-002__content-wrap">
+            <label for="modal-002__close" class="modal-002__close-label">×</label>
+            <div class="scrollbox">
+            <form id="advanced_search" class="modal-wrapper" method="GET" action="">
+              <!-- jsで生成 -->
+            </form>
+            </div>
+        </div>
+        <label for="modal-002__close">
+            <div class="modal-002__background"></div>
+        </label>
+    </div>
+</div>
+</div>
+<div class="search-result">
+    <div class="small-heading-section bigfont">
+
+            <span><a href="" style="color:#0F0;">R</a>ESULT</span>
+      <hr>
+
+    </div>
+    <div class="search-result-dump">
+    <?php
+    input("");
+      ?>
+    </div>
+</div>
+</div>
+<footer>
+</footer>
+</body>
+</html>

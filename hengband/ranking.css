@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Yuji+Syuku&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kaisei+HarunoUmi&display=swap');
+
+body{
+    font-size:20px;
+    font-family: 'Yuji Syuku', serif;
+}
+#ranking_table{
+    border:solid;
+    margin 0 auto;
+}
+#wrapper{
+    border:solid;
+    margin 0 auto;
+}
+.hide{
+	visibility: hidden;
+	position: absolute; 
+}
+table tr:nth-child(even){
+	background-color: #f9f9f9;
+}
+#sort_table {
+	border-collapse:collapse;
+}
+#sort_table td {
+	border:1px solid lightgray;
+}
+#sort_table th {
+	cursor:pointer;
+	background-color:lightgray;
+}
+#float-container{
+    margin: 50px auto 0;
+    max-width: 1500px;
+    padding: 0 60px 100px;
+    border:solid ;
+}
+#inner-container{
+    display:flex;
+    /*align-items: flex-start;*/
+    background-color: white;
+    border:solid;
+    margin: 0 auto;
+}
+#banner{
+    text-align: center;
+    margin: 0 auto;
+    font-size:70px;
+    font-family:math;
+    font-family: 'Kaisei HarunoUmi', serif;
+}
+th{
+  cursor:pointer;
+}

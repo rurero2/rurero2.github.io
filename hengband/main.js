@@ -1,4 +1,8 @@
-console.log("fghj")
+function decimal(value, n) {
+  return Math.floor(value * Math.pow(10, n) ) / Math.pow(10, n);
+}
+
+
 const selectFile = ()=>{
     // FileListオブジェクト取得
     const selectFiles = document.querySelector("#select-file").files
@@ -57,16 +61,20 @@ const selectFile = ()=>{
 
 }
 
-window.addEventListener('load', function() {
+const tablesorter=()=> {
     let column_no = 0;
     //今回クリックされた列番号
     let column_no_prev = 0;
     //前回クリックされた列番号
-    document.querySelectorAll('#mon_table th').forEach(elm=>{
+    document.querySelectorAll('#ranking_table th').forEach(elm=>{
         elm.onclick = function() {
             column_no = this.cellIndex;
             //クリックされた列番号
-            let table = this.parentNode.parentNode.parentNode;
+            var table = this.parentNode.parentNode;
+            console.log(table)
+            console.log(this)
+            console.log(this.cellIndex)
+            
             let sortType = 0;
             //0:数値 1:文字
             let sortArray = new Array;
@@ -75,6 +83,9 @@ window.addEventListener('load', function() {
                 //行番号と値を配列に格納
                 let column = new Object;
                 column.row = table.rows[r];
+                //console.log(table.rows[r])
+                //console.log(column_no)
+                //console.log(table.rows[r].cells[column_no])
                 column.value = table.rows[r].cells[column_no].textContent;
                 sortArray.push(column);
                 //数値判定
@@ -113,7 +124,7 @@ window.addEventListener('load', function() {
                 column_no_prev = column_no;
             }
 
-            var hogeTable = document.getElementById('mon_table');
+            var hogeTable = document.getElementById('ranking_table');
             var TRs = hogeTable.getElementsByTagName('tr');
             for (var i = 1; i < TRs.length; ++i) {
                 var nodes = TRs[i].childNodes;
@@ -130,7 +141,7 @@ window.addEventListener('load', function() {
         ;
     }
     );
-});
+};
 //数値ソート（昇順）
 function compareNumber(a, b) {
     return a.value - b.value;
@@ -182,6 +193,7 @@ var txtToJs = ()=>{
 }
 
 const monInfo = (mon_txt)=>{
+    document.getElementById("ranking_table").innerHTML="表を生成中…"
 
     console.log(mon_txt)
 
@@ -200,16 +212,16 @@ const monInfo = (mon_txt)=>{
     var mon_dict = []
     for (var a of mon_list2) {
         if (a.length < 4) {
-            console.log(a)
+            //console.log(a)
             continue
         }
-        console.log(a)
+        //console.log(a)
         var c, name
         var levcolumn = a.forEach(function(e, index) {
             if (e.slice(0, 3) == "===") {
 
                 name = a.slice(0, index).join("")
-                console.log(name)
+                //console.log(name)
                 c = a[index]
 
             }
@@ -226,14 +238,28 @@ const monInfo = (mon_txt)=>{
         elem["hp"] = b[9].replace("Hp:", "")
         elem["ac"] = b[11].replace("Ac:", "")
         elem["exp"] = b[13].replace("Exp:", "")
+        elem["umami"] = (elem["exp"]!="0" ? (Number(elem["exp"]) / Number(elem["hp"])).toFixed(2): 0)
         mon_dict.push(elem)
+        console.log(elem)
 
     }
     console.log(mon_dict.slice(0, 4))
     document.querySelector("#output").innerHTML = mon_list[10]
 
-    const playerList = document.getElementById("mon_table");
+    const playerList = document.getElementById("ranking_table");
+    playerList.innerHTML=""
     var players = mon_dict
+    playerList.deleteTHead();
+    var thead = document.createElement("thead");
+    playerList.appendChild(thead);
+    var tr = document.createElement("tr");
+    playerList.appendChild(tr);
+    playerList.deleteTHead();
+    for(var a of ["順位","名称","番号","レベル","希少度","速度","HP","AC","経験値","うま味"]){
+        var th = document.createElement("th");
+        th.textContent=a
+        tr.appendChild(th);
+    }
     players.forEach((player)=>{
         // 配列の中のオブジェクトの数だけ処理を繰り返す
         const tr = document.createElement("tr");
@@ -252,7 +278,8 @@ const monInfo = (mon_txt)=>{
         );
     }
     );
-    var hogeTable = document.getElementById('mon_table');
+   
+    var hogeTable = document.getElementById('ranking_table');
     var TRs = hogeTable.getElementsByTagName('tr');
     for (var i = 1; i < TRs.length; ++i) {
         var nodes = TRs[i].childNodes;
@@ -264,12 +291,12 @@ const monInfo = (mon_txt)=>{
         //TRs[i].insertCell(0)
         //TRs[i][0].innerHTML=i
     }
+    document.getElementById("tabletitle").innerHTML="★モンスターランキング"
+    tablesorter()
 }
 
 const artInfo = (mon_txt)=>{
-
-    console.log(mon_txt)
-
+    document.getElementById("ranking_table").innerHTML="表を生成中…"
     var mon_list = mon_txt.split('\n')
     var num = 0
     var mon_list2 = [[]]
@@ -284,22 +311,27 @@ const artInfo = (mon_txt)=>{
     console.log(mon_list2.slice(0, 5))
     var mon_dict = []
     var weaponType = ""
+    console.log(mon_list2)
     for (var a of mon_list2) {
 
         if (a.length < 2) {
-            console.log(a)
+            //console.log(a)
             continue
         }
         if (a.length == 3) {
             weaponType = a[2]
             continue
         }
-        console.log(a)
+        //console.log(a)
         var namecolumn = a[1]
         var infocolumn = a[a.length - 1]
 
         var elem = {}
         var b = infocolumn.split(", ")
+        if (b.length < 6) {
+            console.log(b)
+        }
+        console.log(b)
         elem["tablenum"] = ""
         elem["name"] = namecolumn
         elem["lv"] = b[0].replace("レベル ", "")
@@ -311,12 +343,24 @@ const artInfo = (mon_txt)=>{
     }
     console.log(mon_dict.slice(0, 4))
     document.querySelector("#output").innerHTML = mon_list[10]
-
-    const playerList = document.getElementById("mon_table");
+    
+    var playerList = document.getElementById("ranking_table");
+    document.getElementById("ranking_table").innerHTML=""
     var players = mon_dict
+    playerList.deleteTHead();
+    var thead = document.createElement("thead");
+    playerList.appendChild(thead);
+    var tr = document.createElement("tr");
+    playerList.appendChild(tr);
+    for(var a of ["順位","名称","生成階層","希少度","重量","原価"]){
+        var th = document.createElement("th");
+        th.textContent=a
+        tr.appendChild(th);
+    }
+    
     players.forEach((player)=>{
         // 配列の中のオブジェクトの数だけ処理を繰り返す
-        const tr = document.createElement("tr");
+        var tr = document.createElement("tr");
         playerList.appendChild(tr);
         // 表の中に８個の「tr」（行）ができる
         // 1行の中を生成
@@ -332,7 +376,7 @@ const artInfo = (mon_txt)=>{
         );
     }
     );
-    var hogeTable = document.getElementById('mon_table');
+    var hogeTable = document.getElementById('ranking_table');
     var TRs = hogeTable.getElementsByTagName('tr');
     for (var i = 1; i < TRs.length; ++i) {
         var nodes = TRs[i].childNodes;
@@ -344,6 +388,8 @@ const artInfo = (mon_txt)=>{
         //TRs[i].insertCell(0)
         //TRs[i][0].innerHTML=i
     }
+    document.getElementById("tabletitle").innerHTML="★アーティファクトランキング"
+    tablesorter()
 }
 
 const calc_item = (mode,input_data)=>{
@@ -441,4 +487,22 @@ const zenkakuka=(txt)=>{
     txt=txt.replace(/#/g,"＃")
     txt=txt.replace(/\./g,"．").replace(/\>/g,"＞").replace(/\~/g,"～").replace(/\^/g,"＾").replace(/\*/g,"＊").replace(/\@/g,"＠")
     return txt
+}
+
+
+window.addEventListener('load',function() {
+    tableFromTxtid("art_txt")
+//class="hide"
+});
+var tableFromTxtid=(id)=>{
+    var ad = document.getElementById(id)
+    var ad2 = ad.contentWindow.document.getElementsByTagName('pre')[0].innerHTML
+    if(id=="art_txt"){
+        artInfo(ad2)
+    }
+    else{
+        monInfo(ad2)
+    }
+    
+    
 }

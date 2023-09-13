@@ -1,0 +1,57 @@
+<html>
+
+</html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="robots" content="noindex">
+	<title>モンスター図鑑</title>
+
+	<script src="encoding.js"></script>
+	<script src="monster.js"></script>
+	<iframe src="MonsterRaceDefinitions.txt" id="mon_txt" class="hide"></iframe>
+	<style>
+		.hide {
+			visibility: hidden;
+			position: absolute;
+		}
+
+		textarea {
+			width: 100%;
+			height: 400px;
+			margin-top: 10px;
+		}
+
+		#sort_table {
+			border-collapse: collapse;
+		}
+
+			#sort_table td {
+				border: 1px solid lightgray;
+			}
+
+			#sort_table th {
+				cursor: pointer;
+				background-color: lightgray;
+			}
+	</style>
+</head>
+<body>
+<div id ="ranking_table">
+  <table id="mon_table">
+	<tr>
+		<th>順位</th>
+		<th>名前</th>
+		<th>図鑑No.</th>
+		<th>Lv</th>
+		<th>Rar</th>
+      <th>Spd</th>
+      <th>Hp</th>
+      <th>Ac</th>
+      <th>Exp</th>
+	</tr>
+</table>
+</div>
+  </body>
+
+</html>
