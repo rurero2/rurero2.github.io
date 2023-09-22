@@ -1,0 +1,110 @@
+.acctoggle {
+	display: none;
+}
+
+.accbody::before { /*�^�C�g�����̖��*/
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid #fff;
+    border-right: 2px solid #fff;
+    -webkit-transform: rotate(45deg);
+    position: absolute;
+    top: calc( 50% - 3px );
+    right: 20px;
+    transform: rotate(135deg);
+}
+
+.accbody, .acccont {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    transition: all 0.3s;
+}
+
+.acccont { /*�{��*/
+    height: 0;
+    margin-bottom: 10px;
+    padding: 0 20px;
+    overflow: hidden;
+}
+
+.acctoggle:checked + .accbody + .acccont { /*�J��*/
+    height: auto;
+    padding: 20px;
+    transition: all .3s;
+}
+
+.acctoggle:checked + .accbody::before {
+    transform: rotate(-45deg) !important;
+}
+
+
+.QA {
+    max-width: 1000px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 4px 4px rgb(0 0 0 / 2%), 0 2px 3px -2px rgba(0 0 0 / 5%);
+    background-color: #fff;
+}
+
+.QA summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 1em 2em 1em 3em;
+    color: #333333;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.QA summary::before,
+.QA p::before {
+    position: absolute;
+    left: 1em;
+    font-weight: 600;
+    font-size: 1.3em;
+}
+
+.QA summary::before {
+    color: #75bbff;
+    content: "Q";
+}
+
+.QA summary::after {
+    transform: translateY(-25%) rotate(45deg);
+    width: 7px;
+    height: 7px;
+    margin-left: 10px;
+    border-bottom: 3px solid #333333b3;
+    border-right: 3px solid #333333b3;
+    content: '';
+    transition: transform .5s;
+}
+
+.QA[open] summary::after {
+    transform: rotate(225deg);
+}
+
+.QA p {
+    position: relative;
+    transform: translateY(-10px);
+    opacity: 0;
+    margin: 0;
+    padding: .3em 3em 1.5em;
+    color: #333;
+    transition: transform .5s, opacity .5s;
+}
+
+.QA[open] p {
+    transform: none;
+    opacity: 1;
+}
+
+.QA p::before {
+    color: #ff8d8d;
+    line-height: 1.2;
+    content: "A";
+}
