@@ -1,0 +1,27 @@
+.tips{
+    display:none;
+    border:solid 1px;
+    border-color:white;
+    border-radius:10px;
+    position:absolute;
+    color:white;
+    background-color:black;
+    padding: 10px;
+}
+td:hover .tips{
+    display:block;
+    top: -80px;
+    left: 10px;
+}
+.tips:before {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 20%;
+    border: 15px solid transparent;
+    border-top: 15px solid black;
+    margin-left: -15px;
+}
+td{
+    position:relative;
+}
