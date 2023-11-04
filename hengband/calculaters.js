@@ -854,25 +854,25 @@ function melee_calc(player_class,meichuu_default,meichuu_weapon,weight_kg,
     max_crit_dam=max_crit_dam*5
   }
   else if(ninja_hit=="deadly"){
-    average_dam = Math.max(average_dam*5 ,(half_hp?enemy_hp/2:0));
-    min_dam= Math.max(min_dam*5 ,(half_hp?enemy_hp/2:0));
-    max_dam= Math.max(max_dam*5 ,(half_hp?enemy_hp/2:0));
-    average_crit_dam= Math.max(average_crit_dam*5 ,(half_hp?enemy_hp/2:0));
-    min_crit_dam= Math.max(min_crit_dam*5 ,(half_hp?enemy_hp/2:0));
-    max_crit_dam= Math.max(max_crit_dam*5 ,(half_hp?enemy_hp/2:0));
+    average_dam = Math.max(average_dam*5 ,((half_hp || !unique)?enemy_hp:enemy_hp/2));
+    min_dam= Math.max(min_dam*5 ,((half_hp || !unique)?enemy_hp:enemy_hp/2));
+    max_dam= Math.max(max_dam*5 ,((half_hp || !unique)?enemy_hp:enemy_hp/2));
+    average_crit_dam= Math.max(average_crit_dam*5 ,((half_hp || !unique)?enemy_hp:enemy_hp/2));
+    min_crit_dam= Math.max(min_crit_dam*5 ,((half_hp || !unique)?enemy_hp:enemy_hp/2));
+    max_crit_dam= Math.max(max_crit_dam*5 ,((half_hp || !unique)?enemy_hp:enemy_hp/2));
   }else if(player_class=="ninja"){
     console.log(ninja_hit_chance,deadly_chance)
     average_dam = average_dam*(1-ninja_hit_chance-deadly_chance)
-     +average_dam*ninja_hit_chance*5 +Math.max(average_dam*5 ,(half_hp?enemy_hp/2:0))*deadly_chance;
-    max_dam= Math.max(max_dam*5 ,(half_hp?enemy_hp/2:0));
+     +average_dam*ninja_hit_chance*5 +Math.max(average_dam*5 ,((half_hp || !unique)?enemy_hp:enemy_hp/2))*deadly_chance;
+    max_dam= Math.max(max_dam*5 ,deadly_chance?((half_hp || !unique)?enemy_hp:enemy_hp/2):0);
     average_crit_dam = average_crit_dam*(1-ninja_hit_chance-deadly_chance)
-     +average_crit_dam*ninja_hit_chance*5 +Math.max(average_crit_dam*5 ,(half_hp?enemy_hp/2:0))*deadly_chance;
-    max_crit_dam= Math.max(max_crit_dam*5 ,(half_hp?enemy_hp/2:0));
+     +average_crit_dam*ninja_hit_chance*5 +Math.max(average_crit_dam*5 ,((half_hp || !unique)?enemy_hp:enemy_hp/2))*deadly_chance;
+    max_crit_dam= Math.max(max_crit_dam*5 ,deadly_chance?((half_hp || !unique)?enemy_hp:enemy_hp/2):0);
   }
  
   var average_hit_dam=average_dam
   var surprise_avd=surprise_avd*(1-ninja_hit_chance_sp-deadly_chance_sp)
-     +surprise_avd*ninja_hit_chance_sp*5 +Math.max(surprise_avd*5 ,(half_hp?enemy_hp/2:0))*deadly_chance_sp;
+     +surprise_avd*ninja_hit_chance_sp*5 +Math.max(surprise_avd*5 ,((half_hp || !unique)?enemy_hp:enemy_hp/2))*deadly_chance_sp;
 
   
   var hayagake_td=surprise_avd*surprise_attack_chance*1 + surprise_avd*(1-surprise_attack_chance)*hit_chance

@@ -18,6 +18,8 @@
     <!--<iframe src="monster.txt" id="mon_txt" class="hide"></iframe>-->
 </head>
 <body>
+<div id="wrapper">
+    <div class="table_wrapper">
     <h2 class="small_title">変愚蛮奴 スナイパー火力計算機　v.3.0.0 alpha90</h2>
     項目名にカーソルを合わせると入力のヒントが出ます。<br>
     ※スレイは自動入力されません。ゲーム内表示は小数点切り捨てなので、あちらの方が低く表示されます。<br>
@@ -110,6 +112,7 @@
         <tr><td id="hit_chance"></td><td id="crit_chance"></td><td id="average_real_dam"><td id="average_hit_dam"></td><td id="average_crit_dam"></td>
             <td id="crit_dam"></td><td id="no_crit_dam"></td></tr>
     </table>
+    </div>
     <br>
 
 
@@ -117,6 +120,7 @@
     
     <br>
     <br>
+    <div class="table_wrapper">
     <h2 class="small_title">変愚蛮奴 忍者火力計算機　v.3.0.0 alpha90</h2>
     ※スレイは自動入力されません。<br>
     <br>
@@ -295,16 +299,20 @@
         <tr><td id="mt_surprise_attack_chance"></td><td id="mt_surprise_attack_chance_irimi"></td><td id="mt_ninja_hit_chance"></td>
             <td id="mt_deadly_chance"></td><td id="mt_first_attack_irimi"></td><td id="mt_irimi_td"></td><td id="mt_hayagake_td"></td></tr>
     </table>
+    </div>
     <br>
     <br>
+    <div class="table_wrapper">
     <h2 class="small_title">変愚蛮奴 魔法ダメージ計算機　v.3.0.0 alpha90</h2>
     （2月下旬実装予定）<br>
     <br>
+    </div>
     <!--<div id="magic_table" class="result">
 
     </div>-->
     <br>
     <br>
+    <div class="table_wrapper">
     <h2 class="small_title">変愚蛮奴 魔法失率計算機　v.3.0.0 alpha90</h2>
     自動入力機能はまだありません。<br>
     <br>
@@ -365,10 +373,11 @@
         <tr><td>失率</td><td>最低失率</td></tr>
         <tr><td id="mat_miss_chance"></td><td id="mat_miss_chance_min"></td></tr>
     </table>
+    </div>
     <br>
     <br>
     <br>
-    
+    <div class="table_wrapper">
     <h2 class="small_title">変愚蛮奴 即死確率計算機　v.3.0.0 alpha90</h2>
     （1月下旬実装予定）<br>
     <br>
@@ -393,8 +402,12 @@
         <tr><td id="idt_insta_death_chance"></td><td id="idt_act_twice"></td><td id="idt_act_thrice"></td><td id=""></td><td id=""></td></tr>
     </table>
     -->
+    </div>
     
-    <!--<h2 class="small_title">変愚蛮奴 耐性パズルツール v.3.0.0 alpha90</h2>
+    
+    <!--
+    <div class="table_wrapper">
+    <h2 class="small_title">変愚蛮奴 耐性パズルツール v.3.0.0 alpha90</h2>
     （未定）<br>
     <br>
     r破片→r毒→r獄→r沌
@@ -411,7 +424,12 @@
         <tr><td>隣接</td><td><select id="mat_int">
         <tr><td>AC</td><td><select id="mat_int">
         <tr><td>行動辺りのターン</td><td><select id="mat_int">
-    </table>-->
+    </table>
+    </div>
+    -->
+    <br>
+    <br>
+    <div class="table_wrapper">
     <h2 class="small_title">変愚蛮奴 村正強化率計算機 v.3.0.0 alpha90</h2>
     <br>
     <br>
@@ -424,7 +442,8 @@
         <tr><td>強化率</td><td>期待必要回数</td><td>期待必要金額</td></tr>
         <tr><td id="et_enchant_chance"></td><td id="et_need_num"></td><td id="et_need_money"></td></tr>
     </table>
+    </div>
 
-
+</div>
 </body>
 </html>

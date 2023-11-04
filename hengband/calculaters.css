@@ -10,23 +10,41 @@
 }
 td:hover .tips{
     display:block;
-    top: -80px;
-    left: 10px;
+    top: 0px;
+    left: 30%;
 }
 .tips:before {
     content: "";
     position: absolute;
-    top: 100%;
-    left: 20%;
+    top: 0%;
+    right: 97%;
     border: 15px solid transparent;
     border-top: 15px solid black;
     margin-left: -15px;
+	transform: rotateZ(90deg);
 }
 td{
     position:relative;
-	width:200px;
+	width:300px;
 }
 .hide{
 	visibility: hidden;
 	position: absolute;
+}
+
+
+/*inputなど基本の形の定義*/
+input,select{
+    border: 0.5px solid black;
+    border-radius: 2px;
+	padding:2px;
+}
+.table_wrapper{
+	border: 1px solid black;
+	border-radius: 10px;
+	margin:10px;
+	padding:30px;
+}
+.small_title{
+	margin:0px 0px 15px 0px;
 }
