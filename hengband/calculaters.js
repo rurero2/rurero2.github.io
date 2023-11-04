@@ -171,6 +171,7 @@ function mt_autofill() {
   var situation= document.getElementById("mt_situation").value;
   var weapon= document.getElementById("mt_weapon").options[document.getElementById("mt_weapon").selectedIndex].text;
   var data={}
+  data["twoweapon_penalty"]=document.getElementById("mt_twoweapon_penalty").value;
 
   data["meichuu_default"]=0
   data["dam_plus"]=0
@@ -181,9 +182,8 @@ function mt_autofill() {
   data["backstab"]=0
   data["impact"]=0
   data["str"]=20
-  data["force"]=true
-
-  
+  data["force"]=false
+  data["magic_slay"]=false
 
   //read_item()
 
@@ -194,15 +194,25 @@ function mt_autofill() {
       data["enemy"]=175
       data["str"]=20
       data["blow_num"]=6
+      data["backstab_mode"]="0"
       data["dam_plus"] = data["dam_plus"] + 10;
+
+      data["stealth"]=21
+      data["aggravate"]=false
+      data["light"]=true
+      data["player_lv"]=50
+      data["enemy_lv"]=90
+      data["enemy_hp"]=12321
+      data["unique"]=false
+      data["half_hp"]=false
+      data["enemy_sleep"]=true
       
       break;
       
     case "ninja_D":
       data["player_class"] = "ninja";
       data["meichuu_default"] = data["meichuu_default"] + 100;
-      data["is_ninja"]=true
-      data["enemy"]=175
+      data["enemy"]=111
       data["str"]=20
       data["backstab_mode"]="sleep"
       data["ninja_hit"]="deadly"
@@ -224,7 +234,6 @@ function mt_autofill() {
     case "ninja_J":
       data["player_class"] = "ninja";
       data["meichuu_default"] = data["meichuu_default"] + 100;
-      data["is_ninja"]=true
       data["enemy"]=175
       data["str"]=20
       data["backstab_mode"]="0"
@@ -249,76 +258,201 @@ function mt_autofill() {
   }
   switch(weapon){
     case "★適当な棒 (1d77) (+22,+22) [+10]":
-      data["meichuu_weapon"] = 22;
       data["weight_kg"]=2.5
-      data["dam_plus"] = data["dam_plus"] + 22;
-      data["dice_num"] = 1;
-      data["dice_pip"] = 77;
-      data["slay"] = data["slay"]>5 ? data["slay"]:5;
+      data["slay"] = 2;
       break;
 
-    case "★鉄棒『如意金葹棒重一万三千五百斤』 (7d7) (+5,+25) [+10]":
-      data["meichuu_weapon"] = 5;
-      data["weight_kg"]=25
-      data["dam_plus"] = data["dam_plus"] + 25;
-      data["dice_num"] = 7;
-      data["dice_pip"] = 7;
-      data["slay"] = data["slay"]>2 ? data["slay"]:2;
-      break;
-      
-    case "★ロング・ソード『ウォーパルブレード』 (5d5) (+32,+32)":
-      data["meichuu_weapon"] = 32;
-      data["weight_kg"]=2.5
-      data["dam_plus"] = data["dam_plus"] + 22;
-      data["dice_num"] = 1;
-      data["dice_pip"] = 77;
-      data["slay"] = data["slay"]>5 ? data["slay"]:5;
+    case "★破壊の隼の剣 (3d6) (+10,+25)":
+      data["weight_kg"]=1.5
+      data["slay"] = 1;
+      data["aggravate"]=true
+      data["blow_num"]=data["blow_num"]+3
       break;
 
-    case "★憤怒の三叉槍 (3d9) (+16,+18)":
-      data["meichuu_weapon"] = 16;
-      data["weight_kg"]=15;
-      data["dam_plus"] = data["dam_plus"] + 18;
-      data["dice_num"] = 3;
-      data["dice_pip"] = 9;
-      data["slay"] = data["slay"]>2 ? data["slay"]:2;
+    case "★レイピア『シルバーチャリオッツ』 (2d6) (+17,+12)":
+      data["weight_kg"]=3.7
+      data["slay"] = 2;
+      data["blow_num"]=data["blow_num"]+2
+      break;
+
+    case "★スモール・ソード『エクスカリバー・ジュニア』 (2d6) (+10,+10)":
+      data["weight_kg"]=4
+      data["slay"] = 1;
+      data["blow_num"]=data["blow_num"]+2
+      break;
+
+    case "★ダガー『マジックベーン』 (2d4) (+10,+10)":
+      data["weight_kg"]=0.6
+      data["slay"] = 1;
+      data["magic_slay"]=true
       break;
 
     case "★スモール・ソード『つらぬき丸』 (1d6) (+10,+10)":
-      data["meichuu_weapon"] = 10;
       data["weight_kg"]=3.7
-      data["dam_plus"] = data["dam_plus"] + 10;
-      data["dice_num"] = 1;
-      data["dice_pip"] = 6;
-      data["slay"] = data["slay"]>2 ? data["slay"]:2;
+      data["slay"] = 2;
+      data["blow_num"]=data["blow_num"]+2
       break;
+
+    case "★二天一流開祖宮本武蔵の脇差し (3d4) (+28,+17)":
+      data["weight_kg"]=4.5
+      data["vopal"]="normal"
+      data["slay"] = 1;
+      break;
+
+    case "★抜け忍カムイの忍者刀 (2d9) (+15,+10)":
+      data["weight_kg"]=5
+      data["slay"] = 1;
+      data["stealth"]=data["stealth"]+4
+      break;
+
+    case "★混沌の王子マーリンのショート・ソード (1d7) (+10,+10)":
+      data["weight_kg"]=4
+      data["slay"] = 1;
+      data["blow_num"]=data["blow_num"]+2
+      break;
+
+    case "★ダガー『ニムサンク』 (2d4) (+10,+10)":
+      data["weight_kg"]=0.6
+      data["slay"] = 1;
+      break;
+
+    case "★レイピア『フォラスギル』 (2d6) (+12,+19)":
+      data["weight_kg"]=2
+      data["slay"] = 1;
+      break;
+
+    case "★ドワーフ王アザガルのマン・ゴーシュ (2d5) (+12,+14)":
+      data["weight_kg"]=1.5
+      data["slay"] = 1;
+      break;
+
+    case "★レイピア『すばやき刺』 (1d7) (+27,+10)":
+      data["weight_kg"]=2.7
+      data["slay"] = 1;
+      data["blow_num"]=data["blow_num"]+3
+      break;
+
+    case "★マン・ゴーシュ『小さき刺』 (1d5) (+18,+10)":
+      data["weight_kg"]=1.5
+      data["slay"] = 2;
+      break;
+
+    case "★憤怒の三叉槍 (3d9) (+16,+18)":
+      data["weight_kg"]=15;
+      data["slay"] = 2;
+      break;
+
+    case "★水の王ウルモのトライデント (4d8) (+15,+19)":
+      data["weight_kg"]=3.5
+      data["slay"] = 1
+      break;
+
+    case "★顕聖二郎真君のトライデント (2d8) (+12,+16)":
+      data["weight_kg"]=3.5
+      data["slay"] = 1
+      break;
+
+    case "★破壊神シヴァの三叉槍『トリシューラ』 (4d9) (+15,+25) [+5]":
+      data["weight_kg"]=20
+      data["slay"] = 2
+      break;
+
+    case "★バルログの長ゴスモグのムチ (6d12) (+15,+25)":
+      data["weight_kg"]=15
+      data["slay"] = 1
+      break;
+
+    case "★ムチ『ヴァンパイア・キラー』 (5d6) (+15,+21)":
+      data["weight_kg"]=3.7
+      data["slay"] = 2
+      break;
+
+    case "★鉄棒『如意金葹棒重一万三千五百斤』 (7d7) (+10,+25) [+10]":
+      data["weight_kg"]=25
+      data["slay"] = 2
+      break;
+
+    case "★グレート・ソード『ドラゴンころし』 (8d8) (+10,+15) [+10]":
+      data["weight_kg"]=25
+      data["impact"]="impact"
+      break;
+
+    case "★フレイル『ウィンブロウズ』 (8d6) (+10,+30)":
+      data["weight_kg"]=25
+      data["impact"]="impact"
+      break;
+
+    case "★ロング・ソード『ヴォーパルブレード』 (5d5) (+32,+32)":
+      data["weight_kg"]=7.5
+      data["slay"] = 2
+      data["vopal"]="special"
+      break;
+
+    case "★苦痛のグレイブ (9d6) (+10,+30)":
+      data["weight_kg"]=9.5
+      break;
+
+    case "☆剣の女王キシオムバーグのヘヴィ・ランス (4d8) (+40,+34) (+4探索) {+探r乱獄沌劣;瞬|焼沌理/邪デ}":
+      data["weight_kg"]=20
+      data["slay"] = 2
+      data["force"] = true
+      break;
+      
     default:
       var pattern = /(^.+) \((\d+)d(\d+)\) \([\+\-](\d+),[\+\-](\d+)\)/g
       var wp_data = pattern.exec(weapon)
       if(wp_data != null){
-        data["meichuu_weapon"] = Number(wp_data[4]);
-        data["meichuu_weapon"] = Number(wp_data[5]);
-        data["weight_kg"]=10
-        data["dam_plus"] = data["dam_plus"] +  10;
-        data["dice_num"] = Number(wp_data[2]);
-        data["dice_pip"] = Number(wp_data[3]);
-        data["slay"] = data["slay"]>1 ? data["slay"]:1;
+        if (wp_data[1].includes('忍者刀')){
+          data["weight_kg"]=5
+        }else if (wp_data[1].includes('脇差し')){
+          data["weight_kg"]=4.5
+        }else{
+          data["weight_kg"]=0.1
+          alert("重量データなし")
+        }
       }else{
         alert("武器パターンにマッチしません")
       }
       break;
+    
   }
-  data["meichuu_default"] = data["meichuu_default"] + data["meichuu_weapon"];
+  var pattern = /(^.+) \((\d+)d(\d+)\) \([\+\-](\d+),[\+\-](\d+)\)/g
+  var wp_data = pattern.exec(weapon)
+  if(wp_data != null){
+    data["meichuu_weapon"] = Number(wp_data[4]);
+    data["dam_plus"] = data["dam_plus"] + Number(wp_data[5]);
+    data["dice_num"] = Number(wp_data[2]);
+    data["dice_pip"] = Number(wp_data[3]);
+    if (data["twoweapon_penalty"]!="no" && (wp_data[1].includes('三叉槍') || wp_data[1].includes('トライデント'))){
+      data["meichuu_default"]=data["meichuu_default"]-10
+    }
+  }else{
+    alert("武器パターンにマッチしません")
+  }
+
+  if (data["twoweapon_penalty"]!="no"){
+    console.log("twoweapon_penalty",data["twoweapon_penalty"])
+    if (data["twoweapon_penalty"][0]=="g"){
+      data["meichuu_default"]=data["meichuu_default"]+(Number(data["twoweapon_penalty"].slice(1))/160 + (130 -data["weight_kg"]*20)/8 -100)/2
+    }else{
+      console.log("twoweapon_penalty",Number(data["twoweapon_penalty"]))
+      data["meichuu_default"]=data["meichuu_default"]+(Number(data["twoweapon_penalty"])/160 + (130 -data["weight_kg"]*20)/8 -100)
+    }
+  }
   
+  data["meichuu_default"] = data["meichuu_default"] + data["meichuu_weapon"];
+  data["dam_plus"] = data["dam_plus"] + data["str"];
+  
+  document.getElementById("mt_player_class").querySelector("option[value='" +data["player_class"]+ "']").selected = true;
   document.getElementById("mt_meichuu_default").value =data["meichuu_default"]
   document.getElementById("mt_meichuu_weapon").value = data["meichuu_weapon"]
   document.getElementById("mt_weight_kg").value = data["weight_kg"]
   document.getElementById("mt_dice_num").value = data["dice_num"];
   document.getElementById("mt_dice_pip").value = data["dice_pip"];
   document.getElementById("mt_slay").querySelector("option[value='" +data["slay"]+ "']").selected = true;
-  document.getElementById("mt_force").value.checked = data["force"];
+  document.getElementById("mt_force").checked = data["force"];
   document.getElementById("mt_dam_plus").value  = data["dam_plus"];
-  document.getElementById("mt_str").value  = data["str"];
+  //document.getElementById("mt_str").value  = data["str"];
   document.getElementById("mt_vopal").querySelector("option[value='" +data["vopal"]+ "']").selected = true;
   document.getElementById("mt_blow_num").value  = data["blow_num"];
   document.getElementById("mt_enemy").value  = data["enemy"];
@@ -336,6 +470,8 @@ function mt_autofill() {
   document.getElementById("mt_unique").checked = data["unique"];
   document.getElementById("mt_half_hp").checked = data["half_hp"];
   document.getElementById("mt_enemy_sleep").checked = data["enemy_sleep"];
+
+  document.getElementById("mt_magic_slay").checked = data["magic_slay"];
 
   melee_tool_get()
   
@@ -371,6 +507,7 @@ function sniper_tool_get(){
 }
 
 function melee_tool_get(){
+  
   var mt_player_class= document.getElementById("mt_player_class").value;
   var mt_meichuu_default= Number( document.getElementById("mt_meichuu_default").value );
   var mt_meichuu_weapon= Number( document.getElementById("mt_meichuu_weapon").value );
@@ -380,7 +517,7 @@ function melee_tool_get(){
   var mt_slay= Number( document.getElementById("mt_slay").value );
   var mt_force= document.getElementById("mt_force").checked;
   var mt_dam_plus= Number( document.getElementById("mt_dam_plus").value );
-  var mt_str= Number( document.getElementById("mt_str").value );
+  //var mt_str= Number( document.getElementById("mt_str").value );
   var mt_vopal= document.getElementById("mt_vopal").value;
   var mt_blow_num= Number( document.getElementById("mt_blow_num").value );
   var mt_enemy= Number( document.getElementById("mt_enemy").value );
@@ -398,13 +535,18 @@ function melee_tool_get(){
   var mt_unique= document.getElementById("mt_unique").checked
   var mt_half_hp= document.getElementById("mt_half_hp").checked
   var mt_enemy_sleep= document.getElementById("mt_enemy_sleep").checked
+
   
+  var mt_magic_slay= document.getElementById("mt_magic_slay").checked
+  var mt_additional_slay= document.getElementById("mt_additional_slay").value
+  var mt_final_slay= Number(document.getElementById("mt_final_slay").value)
   
   var result=melee_calc(mt_player_class,mt_meichuu_default,mt_meichuu_weapon,mt_weight_kg,
-                         mt_blow_num,mt_dice_num,mt_dice_pip,mt_slay,mt_str,mt_dam_plus,mt_force,mt_vopal,
-                       mt_impact,mt_backstab_mode,mt_ninja_hit,
+                         mt_blow_num,mt_dice_num,mt_dice_pip,mt_slay,/*mt_str,*/mt_dam_plus,mt_force,mt_vopal,
+                       mt_enemy,mt_impact,mt_backstab_mode,mt_ninja_hit,
                        mt_stealth,mt_aggravate,mt_light,mt_player_lv,
-                        mt_enemy_lv,mt_enemy_hp,mt_unique,mt_half_hp,mt_enemy_sleep);
+                        mt_enemy_lv,mt_enemy_hp,mt_unique,mt_half_hp,mt_enemy_sleep,
+                       mt_magic_slay,mt_additional_slay,mt_final_slay);
   
   document.getElementById("mt_hit_chance").innerHTML=result["hit_chance"] +"%";
   document.getElementById("mt_crit_chance").innerHTML=result["crit_chance"] +"%";
@@ -414,12 +556,27 @@ function melee_tool_get(){
   document.getElementById("mt_crit_dam").innerHTML=result["crit_dam_min"] + "～"+ result["crit_dam_max"];
   document.getElementById("mt_no_crit_dam").innerHTML=result["no_crit_dam_min"] + "～"+ result["no_crit_dam_max"];
 
-  document.getElementById("mt_surprise_attack_chance").innerHTML=result["surprise_attack_chance"] +"%";
-  document.getElementById("mt_surprise_attack_chance_irimi").innerHTML=result["surprise_attack_chance_irimi"] +"%";
-  document.getElementById("mt_ninja_hit_chance").innerHTML=result["ninja_hit_chance"] +"%";
-  document.getElementById("mt_deadly_chance").innerHTML=result["deadly_chance"] +"%";
-  document.getElementById("mt_hayagake_td").innerHTML=result["hayagake_td"];
-  document.getElementById("mt_irimi_td").innerHTML=result["irimi_td"];
+  if(mt_player_class!="ninja"){
+    document.getElementById("mt_surprise_attack_chance").innerHTML="なし"
+    document.getElementById("mt_surprise_attack_chance_irimi").innerHTML="なし"
+    document.getElementById("mt_ninja_hit_chance").innerHTML="なし"
+    document.getElementById("mt_deadly_chance").innerHTML="なし"
+  
+    document.getElementById("mt_first_attack_irimi").innerHTML="なし";
+    document.getElementById("mt_hayagake_td").innerHTML="なし"
+    document.getElementById("mt_irimi_td").innerHTML="なし"
+  }else{
+    document.getElementById("mt_surprise_attack_chance").innerHTML=result["surprise_attack_chance"] +"%";
+    document.getElementById("mt_surprise_attack_chance_irimi").innerHTML=result["surprise_attack_chance_irimi"] +"%";
+    document.getElementById("mt_ninja_hit_chance").innerHTML=result["ninja_hit_chance"] +"%";
+    document.getElementById("mt_deadly_chance").innerHTML=result["deadly_chance"] +"%";
+  
+    document.getElementById("mt_first_attack_irimi").innerHTML=result["first_attack_irimi"];
+    document.getElementById("mt_hayagake_td").innerHTML=result["hayagake_td"]
+    document.getElementById("mt_irimi_td").innerHTML=result["irimi_td"]
+  }
+
+  
   
 }
 
@@ -447,7 +604,7 @@ function sniper_calc(meichuu_default,meichuu_bow,meichuu_arrow,arrow_type,arrow_
   
     return {
       "average_dam":Math.ceil(average_dam),
-      "hit_chance":Math.ceil(hit_chance*100), "crit_chance":Math.ceil(crit_chance*100), 
+      "hit_chance":Math.ceil(hit_chance*1000)/10, "crit_chance":Math.ceil(crit_chance*1000)/10, 
       "average_real_dam":Math.ceil(average_hit_dam*hit_chance),"average_hit_dam":Math.ceil(average_hit_dam), 
       "average_crit_dam":Math.ceil(average_dam*average_crit_mult), 
       "crit_dam_max":Math.ceil(max_crit_dam), "crit_dam_min":Math.ceil(min_crit_dam),
@@ -456,22 +613,31 @@ function sniper_calc(meichuu_default,meichuu_bow,meichuu_arrow,arrow_type,arrow_
 }
 
 function melee_calc(player_class,meichuu_default,meichuu_weapon,weight_kg,
-                        blow_num,dice_num,dice_pip,slay,str,dam_plus,force,vopal,
-                    impact,backstab_mode,ninja_hit,
+                        blow_num,dice_num,dice_pip,slay,/*str,*/dam_plus,force,vopal,
+                    enemy_ac,impact,backstab_mode,ninja_hit,
                    stealth,aggravate,light,player_lv,
-                        enemy_lv,enemy_hp,unique,half_hp,enemy_sleep){
-  var special=1;
+                        enemy_lv,enemy_hp,unique,half_hp,enemy_sleep,
+                   magic_slay,additional_slay,final_slay){
+  var twoweapon="no"
+  if (player_class=="ninja"){
+    //dam_plus=dam_plus/2
+  }
+  if (twoweapon!="no"){
+    //dam_plus=dam_plus/2
+  }
+  dice_num = magic_slay ? dice_num*1.314:dice_num;
+  var special=final_slay;
+  var sub_blow_num=0
 
   var backstab_mult=1
 
   var char_lazy=false
   var hit_chance=0.05
   var miss_chance=char_lazy?0.1:0.05
-  var meichuu_dummy=189//88
-  var ac_dummy=175
+
   var twoweapon=8000/160 + (130-weight_kg*20)/8 - 100
-  console.log("hit_chance",(1-hit_chance-miss_chance),(ac_dummy*0.75/meichuu_dummy),hit_chance + (1-hit_chance-miss_chance)*(ac_dummy*0.75/meichuu_dummy)*-1)
-  hit_chance= hit_chance + (1-hit_chance-miss_chance)*(1-Math.min(Math.max(ac_dummy*0.75/(meichuu_dummy*3),0),1))
+  console.log("hit_chance",(1-hit_chance-miss_chance),(enemy_ac*0.75/meichuu_default),hit_chance + (1-hit_chance-miss_chance)*(enemy_ac*0.75/meichuu_default)*-1)
+  hit_chance= hit_chance + (1-hit_chance-miss_chance)*(1-Math.min(Math.max(enemy_ac*0.75/(meichuu_default*3),0),1))
   
   
   var surprise_attack_chance=0
@@ -547,33 +713,52 @@ function melee_calc(player_class,meichuu_default,meichuu_weapon,weight_kg,
     
     
   }
-  
+
+  //忍者処理。フラグとは無関係に算出。直接ダメージに関わる処理はここでは行わない。
+  //通常時とirimi時両方の変数
   if (player_class=="ninja"){
     console.log("ninja")
     console.log(light)
     var surprise_attack_chance=player_lv*6 +(stealth+10)*4;
-    console.log(surprise_attack_chance / (light?3:1) /(aggravate?3:1) )
     surprise_attack_chance= surprise_attack_chance / (light?3:1) /(aggravate?3:1) 
       /((enemy_lv > (player_lv*player_lv/20 +10))?3:1)
-    console.log(surprise_attack_chance)
     surprise_attack_chance= 1 - Math.min((enemy_lv + 20)/(surprise_attack_chance - 1),1)
-    console.log(surprise_attack_chance)
+
     var surprise_attack_chance_irimi=player_lv*6 +(stealth+10)*4;
     surprise_attack_chance_irimi= surprise_attack_chance_irimi / (1) /(aggravate?3:1) 
       /((enemy_lv > (player_lv*player_lv/20 +10))?3:1)
     surprise_attack_chance_irimi= 1 - Math.min((enemy_lv + 20)/(surprise_attack_chance_irimi - 1),1)
+    
     //危険！フラグに確率代入
-    var ninja_hit_chance=1/(enemy_sleep?13:(surprise_attack_chance?15:27))
+    var ninja_hit_chance=1/27
+    var ninja_hit_chance_sp=1/15
 
-    var deadly_chance=half_hp/((blow_num+1)*10) + 1/666 + ((enemy_sleep ? 1 : surprise_attack_chance) * 1/11 * !unique)
+    var deadly_chance=half_hp/((blow_num+sub_blow_num+1)*10) 
+      + (1/666 *!unique)
+    deadly_chance = ninja_hit_chance>=1 ? 0 : deadly_chance*(1-ninja_hit_chance)
+    var deadly_chance_sp=half_hp/((blow_num+sub_blow_num+1)*10) 
+      + (1/666 *!unique)
+      + (1/11 * !unique)
+    deadly_chance_sp = ninja_hit_chance_sp>=1 ? 0 : deadly_chance_sp*(1-ninja_hit_chance_sp)
   }
   
-  force =force?(slay!=1?slay*1.5+2:3.5):1
-  console.log("理力",force)
+  var force_slay =force?(slay!=1?slay*1.5+2:3.5):slay
+  if (additional_slay=="x1"){
+  }else if (additional_slay[0]=="x"){
+    force_slay = Math.max(Number(additional_slay.slice(1)),force_slay)
+  }else if(additional_slay.indexOf(":")+1){
+    var slay_lim = Number(additional_slay.slice(additional_slay.indexOf(":")+1))
+    var slay_add = Number(additional_slay.slice(0,additional_slay.indexOf(":")))
+    force_slay = (slay + slay_add)>slay_lim?slay_lim:(slay + slay_add);
+  }else{
+    alert("剣術家スレイの値に異常");
+  }
   var weight_lb = (((player_class=="monk_martial") || (player_class=="monk_martial_byakko"))?player_lv*8:weight_kg*20)
   var crit_pow = (player_class=="ninja"?4444:5000)/(impact=="impact"?2:1)
   var crit_chance=Math.max(Math.min((weight_lb + (meichuu_default-meichuu_weapon)*3 + meichuu_weapon*5) /crit_pow *2,1),0)
   crit_chance=impact=="majin"?1:crit_chance;
+  //hit_chance=1
+  //crit_chance=0
   var crit_rand=(impact=="majin" || impact=="impact")?1300:650;
   var w1=weight_lb
   var w2=w1 + crit_rand
@@ -591,12 +776,13 @@ function melee_calc(player_class,meichuu_default,meichuu_weapon,weight_kg,
     +25*(w1<1300 ? Math.max(w2-1300,0)/crit_rand : crit_rand/crit_rand);
   
   //不意打ち系はスレイ直後
+  var surprise_attack_mult=(5 + (player_lv * 2 / 25)) / 2;
   switch(backstab_mode){
     case "sleep":
       backstab_mult=(3 + (player_lv / 20));
       break;
     case "surprise":
-      backstab_mult=(5 + (player_lv * 2 / 25)) / 2;
+      backstab_mult=surprise_attack_mult
       break;
     case "backstab":
       backstab_mult=3 / 2;
@@ -608,49 +794,55 @@ function melee_calc(player_class,meichuu_default,meichuu_weapon,weight_kg,
   var vopal_mult=(vopal=="normal" ? 11/9 : (vopal=="special" ? 5/3 : 1))
 
   
-  var base_average_dam=dice_num *(1+dice_pip)/2 *(slay *force *backstab_mult);
-
+  var base_average_dam=dice_num *(1+dice_pip)/2 *(force_slay *backstab_mult);
+  var surprise_avd=dice_num *(1+dice_pip)/2 *(force_slay *surprise_attack_mult)
+  
   if((player_class=="monk_martial") || (player_class=="monk_martial_byakko")){
     console.log("martial_dam")
      base_average_dam=avarage_dice_roll
     console.log(base_average_dam)
   }
-  var base_min_dam=dice_num *1 *(slay *force *backstab_mult);
-  var base_max_dam=dice_num *dice_pip *(slay *force *backstab_mult);
+  var base_min_dam=dice_num *1 *(force_slay *backstab_mult);
+  var base_max_dam=dice_num *dice_pip *(force_slay *backstab_mult);
   console.log(backstab_mode)
   console.log(backstab_mult)
     console.log(player_class)
   var average_dam=(
     (base_average_dam *(average_crit_mult *crit_chance + 1 *(1-crit_chance)) +average_crit_plus *crit_chance
     )
-    *vopal_mult+ str + dam_plus
+    *vopal_mult+ /*str*/ + dam_plus
+                  )*special;
+  surprise_avd=(
+    (surprise_avd *(average_crit_mult *crit_chance + 1 *(1-crit_chance)) +average_crit_plus *crit_chance
+    )
+    *vopal_mult+ /*str*/ + dam_plus
                   )*special;
   var min_dam=(
     (base_min_dam
     )
-    *vopal_mult+ str + dam_plus
+    *vopal_mult+ /*str*/ + dam_plus
                   )*special;
   var max_dam=(
     (base_max_dam
     )
-    *vopal_mult+ str + dam_plus
+    *vopal_mult+ /*str*/ + dam_plus
                   )*special;
   console.log(average_dam)
   console.log(max_dam)
   var average_crit_dam=((base_average_dam
                * (average_crit_mult) +average_crit_plus)
               *vopal_mult
-               + str + dam_plus
+               + /*str*/ + dam_plus
               )*special;
   var min_crit_dam=((base_min_dam
                * (average_crit_mult) +average_crit_plus)
               *vopal_mult
-               + str + dam_plus
+               + /*str*/ + dam_plus
               )*special;
   var max_crit_dam=((base_max_dam
                * (average_crit_mult) +average_crit_plus)
               *vopal_mult
-               + str + dam_plus
+               + /*str*/ + dam_plus
               )*special;
   //忍者ヒットは最後
   if (ninja_hit=="ninja_hit"){
@@ -662,30 +854,46 @@ function melee_calc(player_class,meichuu_default,meichuu_weapon,weight_kg,
     max_crit_dam=max_crit_dam*5
   }
   else if(ninja_hit=="deadly"){
-    average_dam = Math.max(average_dam*25 ,enemy_hp/2);
-    min_dam= Math.max(min_dam*25 ,enemy_hp/2);
-    max_dam= Math.max(max_dam*25 ,enemy_hp/2);
-    average_crit_dam= Math.max(average_crit_dam*25 ,enemy_hp/2);
-    min_crit_dam= Math.max(min_crit_dam*25 ,enemy_hp/2);
-    max_crit_dam= Math.max(max_crit_dam*25 ,enemy_hp/2);
+    average_dam = Math.max(average_dam*5 ,(half_hp?enemy_hp/2:0));
+    min_dam= Math.max(min_dam*5 ,(half_hp?enemy_hp/2:0));
+    max_dam= Math.max(max_dam*5 ,(half_hp?enemy_hp/2:0));
+    average_crit_dam= Math.max(average_crit_dam*5 ,(half_hp?enemy_hp/2:0));
+    min_crit_dam= Math.max(min_crit_dam*5 ,(half_hp?enemy_hp/2:0));
+    max_crit_dam= Math.max(max_crit_dam*5 ,(half_hp?enemy_hp/2:0));
+  }else if(player_class=="ninja"){
+    console.log(ninja_hit_chance,deadly_chance)
+    average_dam = average_dam*(1-ninja_hit_chance-deadly_chance)
+     +average_dam*ninja_hit_chance*5 +Math.max(average_dam*5 ,(half_hp?enemy_hp/2:0))*deadly_chance;
+    max_dam= Math.max(max_dam*5 ,(half_hp?enemy_hp/2:0));
+    average_crit_dam = average_crit_dam*(1-ninja_hit_chance-deadly_chance)
+     +average_crit_dam*ninja_hit_chance*5 +Math.max(average_crit_dam*5 ,(half_hp?enemy_hp/2:0))*deadly_chance;
+    max_crit_dam= Math.max(max_crit_dam*5 ,(half_hp?enemy_hp/2:0));
   }
-  
+ 
   var average_hit_dam=average_dam
+  var surprise_avd=surprise_avd*(1-ninja_hit_chance_sp-deadly_chance_sp)
+     +surprise_avd*ninja_hit_chance_sp*5 +Math.max(surprise_avd*5 ,(half_hp?enemy_hp/2:0))*deadly_chance_sp;
+
   
-  var hayagake_td=""
-  var irimi_td=""
+  var hayagake_td=surprise_avd*surprise_attack_chance*1 + surprise_avd*(1-surprise_attack_chance)*hit_chance
+    + average_hit_dam*hit_chance*(blow_num-1)
+  var irimi_td=surprise_avd*surprise_attack_chance_irimi*1 + surprise_avd*(1-surprise_attack_chance_irimi)*hit_chance
+    + average_hit_dam*hit_chance*(blow_num-1)
   
+  console.log("初撃","普通",average_dam,"普通率",(1-ninja_hit_chance-deadly_chance),
+             "忍殺率",ninja_hit_chance,deadly_chance,"入")
   
   
   return {
       "average_dam":Math.ceil(average_dam),
-      "hit_chance":Math.ceil(hit_chance*100), "crit_chance":Math.ceil(crit_chance*100), 
+      "hit_chance":Math.ceil(hit_chance*1000)/10, "crit_chance":Math.ceil(crit_chance*1000)/10, 
       "average_real_dam":Math.ceil(average_hit_dam*hit_chance),"average_hit_dam":Math.ceil(average_hit_dam), 
       "average_crit_dam":Math.ceil(average_crit_dam), 
       "crit_dam_max":Math.ceil(max_crit_dam), "crit_dam_min":Math.ceil(min_crit_dam),
       "no_crit_dam_max":Math.ceil(max_dam), "no_crit_dam_min":Math.ceil(min_dam),
-    "surprise_attack_chance":Math.ceil(surprise_attack_chance*100),"surprise_attack_chance_irimi":Math.ceil(surprise_attack_chance_irimi*100),
-    "ninja_hit_chance":Math.ceil(ninja_hit_chance*100),"deadly_chance":Math.ceil(deadly_chance*100),
+    "surprise_attack_chance":Math.ceil(surprise_attack_chance*1000)/10,"surprise_attack_chance_irimi":Math.ceil(surprise_attack_chance_irimi*1000)/10,
+    "ninja_hit_chance":Math.ceil(ninja_hit_chance*1000)/10,"deadly_chance":Math.ceil(deadly_chance*1000)/10,
+    "first_attack_irimi":Math.ceil(surprise_avd*surprise_attack_chance_irimi*1 + surprise_avd*(1-surprise_attack_chance_irimi)*hit_chance),
     "hayagake_td":Math.ceil(hayagake_td),"irimi_td":Math.ceil(irimi_td),
             }
     
@@ -789,16 +997,176 @@ function make_magic_table() {
   table=table+"</table>"
   document.getElementById("magic_table").innerHTML=table
 }
+
+var tableFromTxtid=(id)=>{
+    var ad = document.getElementById(id)
+    var ad2 = ad.contentWindow.document.getElementsByTagName('pre')[0].innerHTML
+    if(id=="art_txt"){
+        artInfo(ad2)
+    }
+    else if(id=="mon_txt"){
+        monInfo(ad2)
+    }else{
+      alert("tableFromTxtidの引数が不正です")
+    }
+}
+
+const artInfo = (mon_txt)=>{
+    var art_list = mon_txt.split('\n')
+    var num = 0
+    var art_list2 = [[]]
+    for (var a of art_list) {
+        if (a == "") {
+            num = num + 1
+            art_list2[num] = []
+        }
+        art_list2[num].push(a)
+    }
+    art_list2.shift()
+    console.log(art_list2.slice(0, 5))
+    var art_dict = []
+    var weaponType = ""
+    console.log(art_list2)
+    for (var a of art_list2) {
+
+        if (a.length < 2) {
+            /*空白カラム*/
+            continue
+        }
+        if (a.length == 3) {
+            weaponType = a[2]
+            /*分類カラム*/
+            continue
+        }
+        console.log(a)
+        var namecolumn = a[1]
+        var infocolumn = a[a.length - 1]
+
+        var elem = {}
+        var b = infocolumn.split(", ")
+        if (b.length < 6) {
+            //console.log(b)
+        }
+        //console.log(b)
+        /*
+N:237:『デーモンベーン』
+E:'Demonbane'
+I:23:17:0
+W:10:0:130:2500
+P:0:2d5:5:0:0
+F:SLAY_DEMON | RIDING
+D:$They say that the sword which servants of the law hate
+D:$ and abhor.
+D:秩序の下僕が忌み嫌う剣があるらしい。
+
+N:212:バルログの長ゴスモグの
+E:of Gothmog
+I:21:2:3
+W:80:100:300:66666
+P:0:6d12:15:25:0
+F:STR | DEX | CON | HIDE_TYPE | 
+F:HEAVY_CURSE | CURSED | AGGRAVATE | 
+F:BRAND_FIRE | RES_FIRE | RES_ELEC | SH_FIRE | SELF_FIRE | RES_DARK | LITE_3 | 
+F:ACTIVATE | SHOW_MODS
+U:BA_FIRE_2
+D:$With this unbearably bright whip of flame, the Balrog Gothmog has become
+D:$ known for never having lost in combat.
+D:この正視するもかなわぬ眩い炎のムチをひとたび手に取れば、
+D:バルログの長ゴズモグは戦において負け知らずであった。
+*/
+        elem["tablenum"] = ""
+        elem["name"] = namecolumn
+        elem["lv"] = b[0].replace("レベル ", "")
+        elem["rare"] = b[1].replace("希少度 ", "")
+        elem["wgt"] = b[2].replace(" kg", "")
+        elem["value"] = b[3].replace("＄", "")
+        art_dict.push(elem)
+    }
+    console.log(art_dict.slice(0, 4))
+}
+
+const monInfo = (mon_txt)=>{
+    var mon_list = mon_txt.split('\n')
+    var num = 0
+    var mon_list2 = [[]]
+    for (var a of mon_list) {
+        if (a == "") {
+            num = num + 1
+            mon_list2[num] = []
+        }
+        mon_list2[num].push(a)
+    }
+    mon_list2.shift()
+    console.log(mon_list2.slice(0, 5))
+    var mon_dict = []
+    for (var a of mon_list2) {
+        if (a.length < 4) {
+            //console.log(a)
+            continue
+        }
+        //console.log(a)
+        var c, name
+        var levcolumn = a.forEach(function(e, index) {
+            if (e.slice(0, 3) == "===") {
+
+                name = a.slice(0, index).join("")
+                //console.log(name)
+                c = a[index]
+
+            }
+        })
+        var elem = {}
+
+        var b = c.split(" ")
+        elem["tablenum"] = ""
+        elem["name"] = name
+        elem["num"] = b[1].replace("Num:", "")
+        elem["lv"] = b[3].replace("Lev:", "")
+        elem["rare"] = b[5].replace("Rar:", "")
+        elem["speed"] = b[7].replace("Spd:", "")
+        elem["hp"] = b[9].replace("Hp:", "")
+        elem["ac"] = b[11].replace("Ac:", "")
+        elem["exp"] = b[13].replace("Exp:", "")
+        elem["umami"] = (elem["exp"]!="0" ? (Number(elem["exp"]) / Number(elem["hp"])).toFixed(2): 0)
+        mon_dict.push(elem)
+        console.log(elem)
+    }
+    console.log(mon_dict.slice(0, 4))
+}
+const toggle_hide = (id)=>{
+  document.getElementById(id).classList.toggle('hide')
+}
+
 document.addEventListener("DOMContentLoaded", (event) => {
   //make_magic_table()
   var elements = document.getElementById("sniper_tool").querySelectorAll('input, select, checkbox')
   for (let i = 0; i < elements.length; i++){
       elements.item(i).onchange = sniper_tool_get;
   }
-  /*
   var elements = document.getElementById("melee_tool").querySelectorAll('input, select, checkbox')
   for (let i = 0; i < elements.length; i++){
       elements.item(i).onchange = melee_tool_get;
   }
-  */
+  var elements = document.getElementById("melee_tool_ninja").querySelectorAll('input, select, checkbox')
+  for (let i = 0; i < elements.length; i++){
+      elements.item(i).onchange = melee_tool_get;
+  }
+  var elements = document.getElementById("melee_tool_other").querySelectorAll('input, select, checkbox')
+  for (let i = 0; i < elements.length; i++){
+      elements.item(i).onchange = melee_tool_get;
+  }
+  var elements = document.getElementById("magic_tool").querySelectorAll('input, select, checkbox')
+  for (let i = 0; i < elements.length; i++){
+      elements.item(i).onchange = magic_tool_get;
+  }
+  var elements = document.getElementById("enchant_tool").querySelectorAll('input, select, checkbox')
+  for (let i = 0; i < elements.length; i++){
+      elements.item(i).onchange = enchant_tool_get;
+  }
+});
+window.addEventListener('load',function() {
+  magic_tool_get()
+  enchant_tool_get()
+    tableFromTxtid("art_txt")
+  
 });

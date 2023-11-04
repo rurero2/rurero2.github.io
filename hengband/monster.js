@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 window.addEventListener('load',function() {
     tableFromTxtid("mon_txt")
 //class="hide"
@@ -234,4 +233,3 @@ const monInfo = (mon_txt)=>{
     }
     console.log(mondex[0])
 }
->>>>>>> 924dd7a6bab45554ff376ee713e05478f0e5dbc6

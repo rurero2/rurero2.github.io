@@ -503,6 +503,4 @@ var tableFromTxtid=(id)=>{
     else{
         monInfo(ad2)
     }
-    
-    
 }

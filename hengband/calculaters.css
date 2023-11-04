@@ -24,4 +24,9 @@ td:hover .tips{
 }
 td{
     position:relative;
+	width:200px;
+}
+.hide{
+	visibility: hidden;
+	position: absolute;
 }
