@@ -392,9 +392,13 @@ function mt_autofill() {
       data["weight_kg"]=9.5
       break;
 
+    case "★カタナ『斬鉄剣』 (10d4) (+17,+21)":
+      data["weight_kg"]=4.5
+      data["vopal"]="normal"
+      break;
+
     case "☆剣の女王キシオムバーグのヘヴィ・ランス (4d8) (+40,+34) (+4探索) {+探r乱獄沌劣;瞬|焼沌理/邪デ}":
-      data["weight_kg"]=20
-      data["slay"] = 2
+      data["weight_kg"]=6
       data["force"] = true
       break;
       
