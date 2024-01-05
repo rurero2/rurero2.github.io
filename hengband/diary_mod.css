@@ -198,7 +198,7 @@ table, td, th {
   padding:5px;
 }
 .ginfo {
-font-size: 8px;
+  font-size: 8px;
   background: transparent;
   position: fixed;
   bottom: 0px; /* 画面上から50px */
