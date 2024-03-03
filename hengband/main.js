@@ -238,7 +238,7 @@ const monInfo = (mon_txt)=>{
         elem["hp"] = b[9].replace("Hp:", "")
         elem["ac"] = b[11].replace("Ac:", "")
         elem["exp"] = b[13].replace("Exp:", "")
-        elem["umami"] = (elem["exp"]!="0" ? (Number(elem["exp"]) / Number(elem["hp"])).toFixed(2): 0)
+        elem["umami"] = (elem["lv"]!="0" ? (Number(elem["exp"]) / Number(elem["lv"])): 0)
         mon_dict.push(elem)
         console.log(elem)
 
